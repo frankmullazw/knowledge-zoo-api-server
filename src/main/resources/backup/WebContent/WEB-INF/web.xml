@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>KZServer</display-name>
+  <!-- home page -->
+  <welcome-file-list>
+    <welcome-file>/website/KZIndex.html</welcome-file>
+  </welcome-file-list>
+  <!-- api servlet. for public api -->
+  <servlet>
+    <servlet-name>KZApiServlet</servlet-name>
+    <servlet-class>edu.monash.knowledgezoo.kzservlet.KZApiServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>KZApiServlet</servlet-name>
+    <url-pattern>/api/*</url-pattern>
+  </servlet-mapping>
+  <!-- private servlet. for private api and private functions -->
+  <servlet>
+    <servlet-name>KZPrivateServlet</servlet-name>
+    <servlet-class>edu.monash.knowledgezoo.kzservlet.KZPrivateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>KZPrivateServlet</servlet-name>
+    <url-pattern>/private/*</url-pattern>
+  </servlet-mapping>
+  <!-- web pages -->
+  <!-- search page -->
+  <servlet>
+    <servlet-name>KZSearch</servlet-name>
+    <jsp-file>/website/KZSearch.html</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>KZSearch</servlet-name>
+    <url-pattern>/search</url-pattern>
+  </servlet-mapping>
+  <!-- statistics page -->
+  <servlet>
+    <servlet-name>KZStatistics</servlet-name>
+    <jsp-file>/website/KZStatistics.html</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>KZStatistics</servlet-name>
+    <url-pattern>/statistics</url-pattern>
+  </servlet-mapping>
+  <!-- history page -->
+  <servlet>
+    <servlet-name>KZHistory</servlet-name>
+    <jsp-file>/website/KZHistory.html</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>KZHistory</servlet-name>
+    <url-pattern>/history</url-pattern>
+  </servlet-mapping>
+  <!-- about page -->
+  <servlet>
+    <servlet-name>KZAbout</servlet-name>
+    <jsp-file>/website/KZAbout.html</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>KZAbout</servlet-name>
+    <url-pattern>/about</url-pattern>
+  </servlet-mapping>
+</web-app>

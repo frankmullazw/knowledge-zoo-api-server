@@ -1,0 +1,43 @@
+<kzserver>
+
+<!--  -->
+
+<api>
+	<!-- API name -->
+	<name>
+		getMyTest1
+	</name>
+	<!-- parameters -->
+	<inputs>
+		<input key="paramKey1">123</input>
+		<input key="paramKey2">abc</input>
+	</inputs>
+	<!-- returns -->
+	<output>
+		my output1
+	</output>
+	<!-- Cypher Script -->
+	<script>
+		MATCH (Ann:Person)-[:LOVE]->(:Person)
+		RETURN Ann.name
+	</script>
+</api>
+
+<api>
+	<!-- API name -->
+	<name>
+		getMyTest2
+	</name>
+	<!-- parameters -->
+	<inputs>
+		<input key="paramKey1">123</input>
+		<input key="paramKey2">abc</input>
+	</inputs>
+	<!-- Cypher Script -->
+	<script>
+		MATCH (Ann:Person)-[:LOVE]->(:Person)
+		RETURN Ann.age
+	</script>
+</api>
+
+</kzserver>
