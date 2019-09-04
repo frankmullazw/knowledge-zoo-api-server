@@ -11,4 +11,23 @@ public class ApiMethodSignature {
     @GeneratedValue
     private Long id;
     private String signature;
+
+    public ApiMethodSignature() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
 }

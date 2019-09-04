@@ -20,4 +20,38 @@ public class ReleaseTag {
     private SDKVersion minimumSDK;
 
 
+    public ReleaseTag() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Integer releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public SDKVersion getMinimumSDK() {
+        return minimumSDK;
+    }
+
+    public void setMinimumSDK(SDKVersion minimumSDK) {
+        this.minimumSDK = minimumSDK;
+    }
 }

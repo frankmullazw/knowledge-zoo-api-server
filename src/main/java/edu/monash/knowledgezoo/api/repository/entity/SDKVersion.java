@@ -15,4 +15,22 @@ public class SDKVersion {
 
     private Integer apiLevel;
 
+    public SDKVersion() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getApiLevel() {
+        return apiLevel;
+    }
+
+    public void setApiLevel(Integer apiLevel) {
+        this.apiLevel = apiLevel;
+    }
 }
