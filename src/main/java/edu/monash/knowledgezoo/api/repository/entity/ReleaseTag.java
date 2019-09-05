@@ -2,6 +2,7 @@ package edu.monash.knowledgezoo.api.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import edu.monash.knowledgezoo.api.repository.entity.relationship.ReleaseTagApi;
 import org.neo4j.ogm.annotation.*;
 
 import java.sql.Date;
@@ -9,8 +10,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@NodeEntity
+@NodeEntity(label = "Tag")
 public class ReleaseTag {
+
+    public static final String TAG_PREFIX = "refs/tags/";
 
     @Id
     @GeneratedValue
@@ -30,9 +33,15 @@ public class ReleaseTag {
 
     @Relationship(type = "CONTAINS")
     @JsonProperty("Signatures")
-    private Set<ApiMethodSignature> methodSignatures = new HashSet<>();
+    private Set<ReleaseTagApi> releaseTagApis = new HashSet<>();
+
+    // todo think about JSON ignore for method signatures
 
     public ReleaseTag() {
+    }
+
+    public ReleaseTag(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -67,17 +76,27 @@ public class ReleaseTag {
         this.sdkVersion = sdkVersion;
     }
 
-    public Set<ApiMethodSignature> getMethodSignatures() {
-        return methodSignatures;
+    public Set<ReleaseTagApi> getReleaseTagApis() {
+        return releaseTagApis;
     }
 
-    public void setMethodSignatures(Set<ApiMethodSignature> methodSignatures) {
-        this.methodSignatures = methodSignatures;
+    public void setReleaseTagApis(Set<ReleaseTagApi> releaseTagApis) {
+        this.releaseTagApis = releaseTagApis;
     }
 
-    public void addMethodSignature(ApiMethodSignature methodSignature) {
-        this.methodSignatures.add(methodSignature);
+    public void addReleaseApi(ReleaseTagApi releaseTagApi) {
         // todo: Duplication handling
+        if (releaseTagApi != null) {
+            releaseTagApi.setReleaseTag(this);
+            this.releaseTagApis.add(releaseTagApi);
+        }
+    }
+
+    public void addReleaseApi(Api api, ReleaseTagApi.State state) {
+        // todo: Duplication handling
+        if (api != null && state != null) {
+            this.releaseTagApis.add(new ReleaseTagApi(state, this, api));
+        }
     }
 
 

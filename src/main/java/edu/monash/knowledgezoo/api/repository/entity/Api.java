@@ -7,8 +7,8 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 
-@NodeEntity
-public class ApiMethodSignature {
+@NodeEntity(label = "API")
+public class Api {
 
     @Id
     @GeneratedValue
@@ -21,14 +21,14 @@ public class ApiMethodSignature {
     @JsonProperty("Name")
     private String name;
 
-    public ApiMethodSignature() {
+    public Api() {
     }
 
-    public ApiMethodSignature(String name) {
+    public Api(String name) {
         this.name = name;
     }
 
-    public ApiMethodSignature(Long id, String name) {
+    public Api(Long id, String name) {
         this.id = id;
         this.name = name;
     }

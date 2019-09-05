@@ -7,7 +7,7 @@ import org.neo4j.ogm.annotation.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@NodeEntity
+@NodeEntity(label = "APK")
 public class Apk {
     // todo idea for permissions, split by .permission. to get the owner of the permission
 

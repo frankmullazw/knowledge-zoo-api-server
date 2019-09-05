@@ -1,6 +1,7 @@
 package edu.monash.knowledgezoo.api;
 
 import edu.monash.knowledgezoo.api.service.ApkTestDataService;
+import edu.monash.knowledgezoo.api.service.ReleaseTagTestDataService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -14,7 +15,8 @@ public class KnowledgeZooApiServerApplication {
 //        SpringApplication.run(KnowledgeZooApiServerApplication.class, args);
 
         ConfigurableApplicationContext context = SpringApplication.run(KnowledgeZooApiServerApplication.class, args);
-        context.getBean(ApkTestDataService.class).generateTestData();
+//        context.getBean(ApkTestDataService.class).generateTestData();
+        context.getBean(ReleaseTagTestDataService.class).generateTestData();
 //        context.getBean(ApkTestDataService.class).printTestNode();
     }
 

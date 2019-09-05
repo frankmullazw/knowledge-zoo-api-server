@@ -7,7 +7,7 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 
-@NodeEntity
+@NodeEntity(label = "Permission")
 public class Permission {
 
     // todo Add permission provider

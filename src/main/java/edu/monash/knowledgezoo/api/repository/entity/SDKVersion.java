@@ -8,7 +8,7 @@ import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 
-@NodeEntity
+@NodeEntity(label = "SDKversion")
 public class SDKVersion {
 
 

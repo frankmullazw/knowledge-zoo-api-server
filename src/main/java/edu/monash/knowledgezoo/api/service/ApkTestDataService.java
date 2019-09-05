@@ -1,10 +1,7 @@
 package edu.monash.knowledgezoo.api.service;
 
 import edu.monash.knowledgezoo.api.repository.*;
-import edu.monash.knowledgezoo.api.repository.entity.Apk;
-import edu.monash.knowledgezoo.api.repository.entity.FingerprintCertificate;
-import edu.monash.knowledgezoo.api.repository.entity.OwnerCertificate;
-import edu.monash.knowledgezoo.api.repository.entity.Permission;
+import edu.monash.knowledgezoo.api.repository.entity.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +36,8 @@ public class ApkTestDataService {
         fingerprintReppo.deleteAll();
         System.out.println("Server: Test data nodes deleted!");
 
-        generateTestApks();
+
+//        generateTestApks();
         System.out.println("Server: generateTestData() Complete");
     }
 

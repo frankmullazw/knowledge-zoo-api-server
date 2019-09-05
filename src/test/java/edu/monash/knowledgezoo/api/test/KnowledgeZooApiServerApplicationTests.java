@@ -1,4 +1,4 @@
-package edu.monash.knowledgezoo.api;
+package edu.monash.knowledgezoo.api.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
