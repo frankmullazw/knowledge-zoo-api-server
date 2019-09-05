@@ -1,0 +1,12 @@
+{
+"name":"Classic Theme GO Launcher EX", 
+"SHA256":"497fb0c07b78bd8171d3e9216b0a03bce73edb9160cfc9df9d50ba2d914c846c", 
+"versionCode":"1", 
+"versionName":"1.0", 
+"size":701211, 
+"minSDKVersion":"5", 
+"certificate(fingerprint)":"14:CE:B7:0D:FB:9E:C5:8B:F4:3F:7B:3B:BA:F1:72:A7:D1:D4:62:69:30:A8:27:80:12:75:D9:4B:60:60:FA:06", 
+"certificate(owner)":"Common Name: 3g.cn, Organizational Unit: 3g.cn, Organization: 3g.cn, Locality: guangzhou, State/Province: guangdong, Country: 020", 
+"permission":[], 
+"API":["java.lang.Object.<init>()", "android.content.Intent.<init>(android.net.Uri,java.lang.String)", "android.content.Intent.setFlags(long)", "android.net.Uri.parse(java.lang.String)", "android.content.ActivityNotFoundException.printStackTrace()", "java.lang.Exception.printStackTrace()", "android.app.AlertDialog.<init>(android.content.Context)", "android.app.AlertDialog.onKeyDown(android.view.KeyEvent,long)", "android.app.Activity.<init>()", "android.app.Activity.onCreate(android.os.Bundle)", "android.app.Activity.onDestroy()", "android.content.pm.PackageManager.getLaunchIntentForPackage(java.lang.String)", "android.content.res.Resources.getString(long)", "android.os.Process.myPid()", "android.os.Process.killProcess(long)"]
+}
