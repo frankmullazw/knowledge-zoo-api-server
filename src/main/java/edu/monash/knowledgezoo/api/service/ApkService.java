@@ -22,7 +22,7 @@ public class ApkService {
     }
 
     @Transactional(readOnly = true)
-    public Collection<Apk> findByLabelLike(String label) {
-        return apkRepository.findByNameLike(label);
+    public Collection<Apk> findByNameLike(String name) {
+        return apkRepository.findByNameLike(name);
     }
 }

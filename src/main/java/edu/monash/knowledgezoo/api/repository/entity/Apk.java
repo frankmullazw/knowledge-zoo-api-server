@@ -1,11 +1,9 @@
 package edu.monash.knowledgezoo.api.repository.entity;
 
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.neo4j.ogm.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,24 +13,33 @@ public class Apk {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
 
+    @JsonProperty("Name")
     private String name;
 
+    @Index(unique = true)
+    @JsonProperty("SHA256")
     private String sha256;
 
+    @JsonProperty("Size")
     private Long size;
 
     @Relationship(type = "DECLARES")
+    @JsonProperty("Permissions")
     private Set<Permission> permissions = new HashSet<>();
 
     @Relationship(type = "DEVELOPED_USING")
+    @JsonProperty("Minimum SDK")
     private SDKVersion minimumSDK;
 
     @Relationship(type = "SIGNED_BY")
+    @JsonProperty("Certificate(Owner)")
     private OwnerCertificate ownerCertificate;
 
     @Relationship(type = "SIGNED_BY")
+    @JsonProperty("Certificate(Fingerprint)")
     private FingerprintCertificate fingerprintCertificate;
 
 //   @Relationship(type = "HAS")

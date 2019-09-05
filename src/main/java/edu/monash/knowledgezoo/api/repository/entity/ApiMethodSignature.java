@@ -1,7 +1,10 @@
 package edu.monash.knowledgezoo.api.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
@@ -9,8 +12,13 @@ public class ApiMethodSignature {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
 
+    // todo: Really think about if this should be unique or not
+    // Map the relationship between releaseTag
+    @Index(unique = true)
+    @JsonProperty("Name")
     private String name;
 
     public ApiMethodSignature() {

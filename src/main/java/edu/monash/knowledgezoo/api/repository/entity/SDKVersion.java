@@ -1,5 +1,7 @@
 package edu.monash.knowledgezoo.api.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Index;
@@ -12,9 +14,11 @@ public class SDKVersion {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
 
     @Index(unique = true)
+    @JsonProperty("Api Level")
     private Integer apiLevel;
 
     public SDKVersion() {

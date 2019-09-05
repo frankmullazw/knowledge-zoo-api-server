@@ -1,7 +1,10 @@
 package edu.monash.knowledgezoo.api.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
@@ -13,32 +16,41 @@ public class OwnerCertificate {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
 
+    @JsonProperty("Common Name")
     private String commonName;
     public static final String COMMON_NAME_PROPERTY_NAME = "Common Name";
     public static final String COMMON_NAME_SHORT_PROPERTY_NAME = "CN";
 
+    @JsonProperty("Organization Unit")
     private String organizationalUnit;
     public static final String ORGANIZATIONAL_UNIT_PROPERTY_NAME = "Organizational Unit";
     public static final String ORGANIZATIONAL_UNIT_SHORT_PROPERTY_NAME = "OU";
 
+    @JsonProperty("Organization")
     private String organization;
     public static final String ORGANIZATION_PROPERTY_NAME = "Organization";
     public static final String ORGANIZATION_SHORT_PROPERTY_NAME = "O";
 
+    @JsonProperty("Locality")
     private String locality;
     public static final String LOCALITY_PROPERTY_NAME = "Locality";
     public static final String LOCALITY_SHORT_PROPERTY_NAME = "L";
 
+    @JsonProperty("State/Province")
     private String stateProvince;
     public static final String STATE_PROVINCE_PROPERTY_NAME = "State/Province";
     public static final String STATE_PROVINCE_SHORT_PROPERTY_NAME = "ST";
 
+    @JsonProperty("Country")
     private String country;
     public static final String COUNTRY_PROPERTY_NAME = "Country";
     public static final String COUNTRY_SHORT_PROPERTY_NAME = "C";
 
+    @Index(unique = true)
+    @JsonIgnore
     private String fullCertificate;
 
     public OwnerCertificate() {

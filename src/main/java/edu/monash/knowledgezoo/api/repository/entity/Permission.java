@@ -1,5 +1,7 @@
 package edu.monash.knowledgezoo.api.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Index;
@@ -8,13 +10,18 @@ import org.neo4j.ogm.annotation.NodeEntity;
 @NodeEntity
 public class Permission {
 
+    // todo Add permission provider
+
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
 
     @Index(unique = true)
+    @JsonProperty("Name")
     private String name;
 
+    @JsonProperty("Generic Name")
     private String genericName;
 
     public Permission() {
@@ -71,9 +78,11 @@ public class Permission {
      * @return Generic permission name in format easy for human understanding
      */
     private String constructGenericName(String fullPermission) {
-        if (fullPermission == null)
+        if (fullPermission == null) {
+            System.out.println("Null fullPermission input in constructGenericName");
             return null;
-        else if (fullPermission.equals("")) {
+        } else if (fullPermission.equals("")) {
+            System.out.println("Empty fullPermission input in constructGenericName");
             return "";
         } else {
             // set a new generic name
