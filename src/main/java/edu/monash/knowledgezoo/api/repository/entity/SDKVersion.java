@@ -2,6 +2,7 @@ package edu.monash.knowledgezoo.api.repository.entity;
 
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 
@@ -13,9 +14,19 @@ public class SDKVersion {
     @GeneratedValue
     private Long id;
 
+    @Index(unique = true)
     private Integer apiLevel;
 
     public SDKVersion() {
+    }
+
+    public SDKVersion(Integer apiLevel) {
+        this.apiLevel = apiLevel;
+    }
+
+    public SDKVersion(Long id, Integer apiLevel) {
+        this.id = id;
+        this.apiLevel = apiLevel;
     }
 
     public Long getId() {

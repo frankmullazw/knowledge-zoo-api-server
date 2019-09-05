@@ -7,22 +7,24 @@ import org.neo4j.ogm.annotation.NodeEntity;
 @NodeEntity
 public class FingerprintCertificate {
 
+    public static final String PROPERTY_NAME = "certificate(fingerprint)";
+
     @Id
     @GeneratedValue
     private Long id;
 
-    private String value;
+    private String name;
 
     public FingerprintCertificate() {
     }
 
-    public FingerprintCertificate(String value) {
-        this.value = value;
+    public FingerprintCertificate(String name) {
+        this.name = name;
     }
 
-    public FingerprintCertificate(Long id, String value) {
+    public FingerprintCertificate(Long id, String name) {
         this.id = id;
-        this.value = value;
+        this.name = name;
     }
 
     public Long getId() {
@@ -33,12 +35,12 @@ public class FingerprintCertificate {
         this.id = id;
     }
 
-    public String getValue() {
-        return value;
+    public String getName() {
+        return name;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

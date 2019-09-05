@@ -10,10 +10,21 @@ public class ApiMethodSignature {
     @Id
     @GeneratedValue
     private Long id;
-    private String signature;
+
+    private String name;
 
     public ApiMethodSignature() {
     }
+
+    public ApiMethodSignature(String name) {
+        this.name = name;
+    }
+
+    public ApiMethodSignature(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
 
     public Long getId() {
         return id;
@@ -23,11 +34,11 @@ public class ApiMethodSignature {
         this.id = id;
     }
 
-    public String getSignature() {
-        return signature;
+    public String getName() {
+        return name;
     }
 
-    public void setSignature(String signature) {
-        this.signature = signature;
+    public void setName(String name) {
+        this.name = name;
     }
 }

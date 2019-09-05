@@ -14,7 +14,7 @@ public class KnowledgeZooApiServerApplication {
 //        SpringApplication.run(KnowledgeZooApiServerApplication.class, args);
 
         ConfigurableApplicationContext context = SpringApplication.run(KnowledgeZooApiServerApplication.class, args);
-//        context.getBean(ApkTestDataService.class).generateTestData();
+        context.getBean(ApkTestDataService.class).generateTestData();
         context.getBean(ApkTestDataService.class).printTestNode();
     }
 

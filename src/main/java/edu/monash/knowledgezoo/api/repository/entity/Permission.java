@@ -2,43 +2,93 @@ package edu.monash.knowledgezoo.api.repository.entity;
 
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
 public class Permission {
 
-     @Id
-     @GeneratedValue
-     private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-     private String name;
+    @Index(unique = true)
+    private String name;
 
-     private String genericName;
+    private String genericName;
 
-     public Permission() {
-     }
+    public Permission() {
+    }
 
-     public Long getId() {
-          return id;
-     }
+    public Permission(String name) {
+        this.setName(name);
+    }
 
-     public void setId(Long id) {
-          this.id = id;
-     }
+    public Permission(String name, String genericName) {
+        this.name = name;
+        this.genericName = genericName;
+    }
 
-     public String getName() {
-          return name;
-     }
+    public Permission(Long id, String name, String genericName) {
+        this.id = id;
+        this.name = name;
+        this.genericName = genericName;
+    }
 
-     public void setName(String name) {
-          this.name = name;
-     }
+    public Long getId() {
+        return id;
+    }
 
-     public String getGenericName() {
-          return genericName;
-     }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-     public void setGenericName(String genericName) {
-          this.genericName = genericName;
-     }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+
+        if (this.genericName == null || this.genericName.equals(""))
+            // set a new generic name
+            this.setGenericName(constructGenericName(this.name));
+    }
+
+    public String getGenericName() {
+        return genericName;
+    }
+
+    public void setGenericName(String genericName) {
+        this.genericName = genericName;
+    }
+
+    /**
+     * This method constructs a generic name from the given permission name
+     * input: android.permission.WRITE_SYNC_SETTINGS, output: Write Sync Settings
+     *
+     * @param fullPermission Full android permission name e.g android.permission.WRITE_SYNC_SETTINGS
+     * @return Generic permission name in format easy for human understanding
+     */
+    private String constructGenericName(String fullPermission) {
+        if (fullPermission == null)
+            return null;
+        else if (fullPermission.equals("")) {
+            return "";
+        } else {
+            // set a new generic name
+            // Splits the permission by peroid and then uses the splits using the semi colons while
+            // only leaving the first letter captilized
+            String[] permParts = fullPermission.split("\\.");
+            StringBuilder tempGenericName = new StringBuilder("");
+            for (String word : permParts[permParts.length - 1].split("_")) {
+                tempGenericName.append(word.charAt(0));
+                tempGenericName.append(word.substring(1).toLowerCase());
+                tempGenericName.append(" ");
+            }
+            tempGenericName.setLength(tempGenericName.length() - 1);
+
+            return tempGenericName.toString();
+        }
+    }
 }

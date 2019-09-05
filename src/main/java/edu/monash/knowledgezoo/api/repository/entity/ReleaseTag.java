@@ -5,6 +5,9 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
+import java.sql.Date;
+
+
 @NodeEntity
 public class ReleaseTag {
 
@@ -14,11 +17,10 @@ public class ReleaseTag {
 
     private String name;
 
-    private Integer releaseDate;
+    private Date releaseDate;
 
     @Relationship(type = "DEVELOPED_USING")
-    private SDKVersion minimumSDK;
-
+    private SDKVersion sdkVersion;
 
     public ReleaseTag() {
     }
@@ -39,19 +41,19 @@ public class ReleaseTag {
         this.name = name;
     }
 
-    public Integer getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Integer releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 
-    public SDKVersion getMinimumSDK() {
-        return minimumSDK;
+    public SDKVersion getSdkVersion() {
+        return sdkVersion;
     }
 
-    public void setMinimumSDK(SDKVersion minimumSDK) {
-        this.minimumSDK = minimumSDK;
+    public void setSdkVersion(SDKVersion sdkVersion) {
+        this.sdkVersion = sdkVersion;
     }
 }
