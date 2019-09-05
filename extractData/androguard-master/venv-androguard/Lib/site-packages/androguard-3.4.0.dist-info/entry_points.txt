@@ -1,0 +1,12 @@
+[console_scripts]
+androapkid = androguard.cli.entry_points:apkid
+androarsc = androguard.cli.entry_points:arsc
+androaxml = androguard.cli.entry_points:axml
+androcg = androguard.cli.entry_points:cg
+androdd = androguard.cli.entry_points:decompile
+androdis = androguard.cli.entry_points:disassemble
+androguard = androguard.cli.entry_points:entry_point
+androgui = androguard.cli.entry_points:gui
+androlyze = androguard.cli.entry_points:analyze
+androsign = androguard.cli.entry_points:sign
+

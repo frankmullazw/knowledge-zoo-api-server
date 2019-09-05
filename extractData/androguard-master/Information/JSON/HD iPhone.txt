@@ -1,0 +1,12 @@
+{
+"name":"HD iPhone", 
+"SHA256":"56966f4cc92be60466eaf185c030331fa62a4505958c1c8695b9ed33777398a6", 
+"versionCode":"10", 
+"versionName":"1.9", 
+"size":2250934, 
+"minSDKVersion":"5", 
+"certificate(fingerprint)":"AE:E6:F5:CF:0F:45:CB:5E:74:88:5D:FF:4A:DE:2F:C5:38:FA:08:3D:E9:03:B7:36:30:F1:F3:02:80:AE:B1:1C", 
+"certificate(owner)":"Common Name: Aldene Villardo, Locality: Germantown, State/Province: MD, Country: US", 
+"permission":[], 
+"API":["java.lang.Object.<init>()", "android.content.Intent.<init>(android.net.Uri,java.lang.String)", "android.content.Intent.setPackage(java.lang.String)", "android.content.Intent.setFlags(long)", "android.net.Uri.parse(java.lang.String)", "android.content.ActivityNotFoundException.printStackTrace()", "java.lang.Exception.printStackTrace()", "android.app.AlertDialog.<init>(android.content.Context)", "android.app.AlertDialog.onKeyDown(android.view.KeyEvent,long)", "android.app.Activity.<init>()", "android.app.Activity.onCreate(android.os.Bundle)", "android.app.Activity.onDestroy()", "android.content.pm.PackageManager.getLaunchIntentForPackage(java.lang.String)", "android.content.res.Resources.getString(long)", "android.os.Process.myPid()", "android.os.Process.killProcess(long)"]
+}

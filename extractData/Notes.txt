@@ -1,0 +1,67 @@
+1. extract metadata used to re-format the info of the data extracted
+
+2. https://androguard.readthedocs.io/en/stable/intro/gettingstarted.html
+go to dir (C:\Users\caila\Desktop\FIT4003\androguard-master\venv-androguard\Scripts) and run (python androguard.exe <APK path>). It will run. Use a.get_permissions() and many others to get the permission information.
+
+Android APIs hence should be the public methods in the SDK
+https://github.com/androguard/androguard/issues/282
+
+	
+0. focus on famous australian apps (around 10,000), Frank download
+1. eliminate Ljava....in argument
+3. method/package who use that API as attibute for API node (later on)
+
+
+5. research proposal:
+make it clear what is the motivation: what can benefit from it, what's it outcome: understand the mobile app, support faster search for android application (question answer), recommendation/correlation, compatibility(important); 
+this is an interesting project and what we done can be useful for people
+
+6. upload apk tool: json only send to Frank, I no need use my createNode python file to create a node for user's upload apk 
+
+7. reschedule meeting, not here 26/9 - 1/10 for unigames
+
+- friday meet write report
+- run all json file send to frank
+
+
+**- json file format save in .txt
+
+
+
+JSON format
+  # Order of JSON format is name, SHA256 hash, size, minSDKVersion, certificate(fingerprint), certificate(owner), permission
+
+
+{"name": "asdasd",
+"SHA256": "212313",
+"versionCode": "21213",
+"versionName": "21213",
+"size": 123,
+"minSDKVersion": "123",
+"certificate(fingerprint)": "dsadasdasd",
+"certificate(owner)": "dsadasdasd", < node
+"permission": ["1","2","3","3"]
+"API" : ["a","b","c"]
+}
+
+
+Fail:
+TopTop4.0.3withads.apk
+TPK.apk
+
+
+
+
+neo4j:
+1. delete node > MATCH (n:APK { name: 'Facebook' })
+DELETE n
+2. delete a node with all its relationships > MATCH (n { name: 'Andy' })
+DETACH DELETE n
+3. Delete relationships only > MATCH (n { name: 'Andy' })-[r:KNOWS]->()
+DELETE r
+4. create label > CREATE (p:Permission)
+
+
+
+Check relationship:
+https://stackoverflow.com/questions/21647101/neo4jrestclient-check-relations

@@ -1,0 +1,12 @@
+{
+"name":"Honeycomb GO Launcher EX theme", 
+"SHA256":"7e3ac2840f90050f0270eb777c3e3f8e0edc723d5fa61f291494e5e52df8cce2", 
+"versionCode":"2", 
+"versionName":"1.4", 
+"size":795619, 
+"minSDKVersion":"5", 
+"certificate(fingerprint)":"E6:0C:1D:85:01:86:57:49:4B:E4:CB:6C:F1:16:F4:62:1A:1C:11:35:3B:A4:5B:1B:EC:FD:AB:4A:16:CC:AA:D0", 
+"certificate(owner)":"Common Name: Bendik Rostad, Organizational Unit: Urtegata, Locality: Oslo", 
+"permission":[], 
+"API":["java.lang.Object.<init>()", "android.content.Intent.<init>(android.net.Uri,java.lang.String)", "android.content.Intent.setPackage(java.lang.String)", "android.content.Intent.setFlags(long)", "android.net.Uri.parse(java.lang.String)", "android.content.ActivityNotFoundException.printStackTrace()", "java.lang.Exception.printStackTrace()", "android.app.AlertDialog.<init>(android.content.Context)", "android.app.AlertDialog.onKeyDown(android.view.KeyEvent,long)", "android.app.Activity.<init>()", "android.app.Activity.onCreate(android.os.Bundle)", "android.app.Activity.onDestroy()", "android.content.pm.PackageManager.getLaunchIntentForPackage(java.lang.String)", "android.content.res.Resources.getString(long)", "android.os.Process.myPid()", "android.os.Process.killProcess(long)"]
+}

@@ -1,0 +1,12 @@
+{
+"name":"Downloader Browser Plugin", 
+"SHA256":"556f41850b15cf529550b2157462016b064bfed1673fe1987a9cd7db805615e6", 
+"versionCode":"1", 
+"versionName":"1.0", 
+"size":37292, 
+"minSDKVersion":"21", 
+"certificate(fingerprint)":"DB:26:27:77:A4:09:34:5B:94:A6:75:11:91:12:41:1A:8C:30:8A:21:99:26:31:03:FF:0D:48:AB:7A:78:1D:E9", 
+"certificate(owner)":"Common Name: Elias Saba", 
+"permission":[], 
+"API":["java.lang.Object.<init>()"]
+}

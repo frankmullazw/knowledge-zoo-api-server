@@ -1,0 +1,12 @@
+{
+"name":"Keep Calm And ____?", 
+"SHA256":"1ef5475352746044406ceeb18a73420fb3a796dc494d7278473f303ce97319da", 
+"versionCode":"10", 
+"versionName":"1.1.3", 
+"size":14216782, 
+"minSDKVersion":"8", 
+"certificate(fingerprint)":"7D:CF:43:73:93:25:FF:E0:32:B7:36:E2:00:81:37:10:E2:70:FD:35:54:56:DD:1B:97:EB:98:80:E8:5B:55:FD", 
+"certificate(owner)":"Common Name: Jay Colber, Organizational Unit: Developer, Organization: Jay Colber", 
+"permission":["android.permission.ACCESS_WIFI_STATE", "com.lge.launcher.permission.READ_SETTINGS", "com.motorola.dlauncher.permission.INSTALL_SHORTCUT", "android.permission.ACCESS_NETWORK_STATE", "com.motorola.dlauncher.permission.READ_SETTINGS", "com.lge.launcher.permission.INSTALL_SHORTCUT", "android.permission.READ_PHONE_STATE", "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.ACCESS_COARSE_LOCATION", "com.motorola.launcher.permission.INSTALL_SHORTCUT", "com.android.launcher.permission.READ_SETTINGS", "com.android.browser.permission.WRITE_HISTORY_BOOKMARKS", "android.permission.READ_EXTERNAL_STORAGE", "org.adw.launcher.permission.READ_SETTINGS", "com.android.browser.permission.READ_HISTORY_BOOKMARKS", "android.permission.SET_WALLPAPER", "android.permission.INTERNET", "com.android.launcher.permission.INSTALL_SHORTCUT", "com.htc.launcher.permission.READ_SETTINGS", "com.android.launcher.permission.UNINSTALL_SHORTCUT", "com.fede.launcher.permission.READ_SETTINGS", "com.motorola.launcher.permission.READ_SETTINGS"], 
+"API":[]
+}
