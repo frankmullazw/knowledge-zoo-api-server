@@ -24,18 +24,21 @@ public class ReleaseTag {
     @JsonProperty("Name")
     private String name;
 
-    @JsonProperty("Release Date")
+//    @JsonProperty("Release Date")
+    @JsonIgnore
     private Date releaseDate;
 
     @Relationship(type = "DEVELOPED_USING")
-    @JsonProperty("SDK Version")
+//    @JsonProperty("SDK Version")
+    @JsonIgnore
     private SDKVersion sdkVersion;
 
-    @Relationship(type = "CONTAINS")
-    @JsonProperty("Signatures")
-    private Set<ReleaseTagApi> releaseTagApis = new HashSet<>();
+    @Relationship(type = "TagToTag")
+    @JsonIgnore
+    private ReleaseTag nextTag;
 
-    // todo think about JSON ignore for method signatures
+    @JsonIgnore
+    private Set<ReleaseTagApi> releaseTagApis = new HashSet<>();
 
     public ReleaseTag() {
     }
@@ -99,5 +102,22 @@ public class ReleaseTag {
         }
     }
 
+    public ReleaseTag getNextTag() {
+        return nextTag;
+    }
 
+    public void setNextTag(ReleaseTag nextTag) {
+        this.nextTag = nextTag;
+    }
+
+    @Override
+    public String toString() {
+        return "ReleaseTag{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", sdkVersion=" + sdkVersion +
+                ", releaseTagApis=" + releaseTagApis +
+                '}';
+    }
 }

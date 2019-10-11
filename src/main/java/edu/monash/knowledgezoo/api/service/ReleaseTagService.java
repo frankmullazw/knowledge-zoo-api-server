@@ -10,19 +10,24 @@ import java.util.Collection;
 @Service
 public class ReleaseTagService {
 
-    private final ReleaseTagRepository releaseTagRepository;
+    private final ReleaseTagRepository releaseTagRepo;
 
-    public ReleaseTagService(ReleaseTagRepository releaseTagRepository) {
-        this.releaseTagRepository = releaseTagRepository;
+    public ReleaseTagService(ReleaseTagRepository releaseTagRepo) {
+        this.releaseTagRepo = releaseTagRepo;
     }
 
     @Transactional(readOnly = true)
     public ReleaseTag findByName(String name) {
-        return releaseTagRepository.findByName(name);
+        return releaseTagRepo.findByName(name);
+    }
+
+    @Transactional(readOnly = true)
+    public Iterable<ReleaseTag> findAll() {
+        return releaseTagRepo.findAll();
     }
 
     @Transactional(readOnly = true)
     public Collection<ReleaseTag> findByNameLike(String name) {
-        return releaseTagRepository.findByNameLike(name);
+        return releaseTagRepo.findByNameLike(name);
     }
 }

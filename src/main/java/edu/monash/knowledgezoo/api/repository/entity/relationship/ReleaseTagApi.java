@@ -1,5 +1,6 @@
 package edu.monash.knowledgezoo.api.repository.entity.relationship;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.monash.knowledgezoo.api.repository.entity.Api;
 import edu.monash.knowledgezoo.api.repository.entity.ReleaseTag;
 import org.neo4j.ogm.annotation.*;
@@ -18,6 +19,7 @@ public class ReleaseTagApi {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
 
 
@@ -25,6 +27,7 @@ public class ReleaseTagApi {
     private State state;
 
     @StartNode
+    @JsonIgnore
     private ReleaseTag releaseTag;
 
     @EndNode

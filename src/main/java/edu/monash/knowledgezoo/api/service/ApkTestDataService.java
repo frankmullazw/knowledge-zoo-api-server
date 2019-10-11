@@ -1,7 +1,10 @@
 package edu.monash.knowledgezoo.api.service;
 
 import edu.monash.knowledgezoo.api.repository.*;
-import edu.monash.knowledgezoo.api.repository.entity.*;
+import edu.monash.knowledgezoo.api.repository.entity.Apk;
+import edu.monash.knowledgezoo.api.repository.entity.FingerprintCertificate;
+import edu.monash.knowledgezoo.api.repository.entity.OwnerCertificate;
+import edu.monash.knowledgezoo.api.repository.entity.Permission;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,23 +20,22 @@ public class ApkTestDataService {
 
     private final OwnerCertificateRepository ownerRepo;
 
-    private final FingerprintCertificateRepository fingerprintReppo;
+    private final FingerprintCertificateRepository fingerprintRepo;
+    private final ApiRepository apiRepo;
 
-    public ApkTestDataService(ApkRepository apkRepo, PermissionRepository permissionRepo, SDKVersionRepository sdkVersionRepo, OwnerCertificateRepository ownerRepo, FingerprintCertificateRepository fingerprintReppo) {
+    public ApkTestDataService(ApkRepository apkRepo, PermissionRepository permissionRepo, SDKVersionRepository sdkVersionRepo,
+                              OwnerCertificateRepository ownerRepo, FingerprintCertificateRepository fingerprintRepo, ApiRepository apiRepo) {
         this.apkRepo = apkRepo;
         this.permissionRepo = permissionRepo;
         this.sdkVersionRepo = sdkVersionRepo;
         this.ownerRepo = ownerRepo;
-        this.fingerprintReppo = fingerprintReppo;
+        this.fingerprintRepo = fingerprintRepo;
+        this.apiRepo = apiRepo;
     }
 
     @Transactional
     public void generateTestData() {
-        apkRepo.deleteAll();
-        permissionRepo.deleteAll();
-        sdkVersionRepo.deleteAll();
-        ownerRepo.deleteAll();
-        fingerprintReppo.deleteAll();
+        removeApkData();
         System.out.println("Server: Test data nodes deleted!");
 
 
@@ -49,7 +51,7 @@ public class ApkTestDataService {
         apk.setFingerprintCertificate(
                 new FingerprintCertificate("E3:F9:E1:E0:CF:99:D0:E5:6A:05:5B:A6:5E:24:1B:33:99:F7:CE:A5:24:32:6B:0C:DD:6E:C1:32:7E:D0:FD:C1"));
         apk.setOwnerCertificate(OwnerCertificate.generateFromFullCertificate
-                        ("Common Name: Facebook Corporation, Organizational Unit: Facebook, Organization: Facebook Mobile, Locality: Palo Alto, State/Province: CA, Country: US"));
+                ("Common Name: Facebook Corporation, Organizational Unit: Facebook, Organization: Facebook Mobile, Locality: Palo Alto, State/Province: CA, Country: US"));
         apk.addPermission(new Permission("android.permission.WRITE_SYNC_SETTINGS"));
         apk.addPermission(new Permission("com.facebook.home.permission.WRITE_BADGES"));
         apk.addPermission(new Permission("android.permission.CALL_PHONE"));
@@ -62,5 +64,14 @@ public class ApkTestDataService {
         for (Apk apk : apkRepo.findAll()) {
             System.out.println(apk);
         }
+    }
+
+    public void removeApkData() {
+        apkRepo.deleteAll();
+        permissionRepo.deleteAll();
+        sdkVersionRepo.deleteAll();
+        ownerRepo.deleteAll();
+        fingerprintRepo.deleteAll();
+        apiRepo.deleteAll();
     }
 }

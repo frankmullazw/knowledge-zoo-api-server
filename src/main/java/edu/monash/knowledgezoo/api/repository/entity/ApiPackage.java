@@ -22,7 +22,14 @@ public class ApiPackage {
     @JsonProperty("Is Library")
     private boolean isLibrary;
 
+//    @Relationship(type = "CONTAINS", direction = Relationship.INCOMING)
+//    private Set<Api> apis = new HashSet<>();
+
     public ApiPackage() {
+    }
+
+    public ApiPackage(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -48,4 +55,22 @@ public class ApiPackage {
     public void setLibrary(boolean library) {
         isLibrary = library;
     }
+
+//    public Set<Api> getApis() {
+//        return apis;
+//    }
+//
+//    public void addApis(Api api) {
+//        if (api != null) {
+//            if (this.apis == null)
+//                this.apis = new HashSet<>();
+//            this.apis.add(api);
+//        }
+//    }
+//
+//    public void setApis(Set<Api> apis) {
+//        this.apis = apis;
+//    }
+
+
 }

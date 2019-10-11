@@ -24,6 +24,11 @@ public class OwnerCertificate {
     public static final String COMMON_NAME_PROPERTY_NAME = "Common Name";
     public static final String COMMON_NAME_SHORT_PROPERTY_NAME = "CN";
 
+    @JsonProperty("Email Address")
+    private String emailAddress;
+    public static final String EMAIL_ADDRESS_PROPERTY_NAME = "Email Address";
+    public static final String EMAIL_ADDRESS_SHORT_PROPERTY_NAME = "EA";
+
     @JsonProperty("Organization Unit")
     private String organizationalUnit;
     public static final String ORGANIZATIONAL_UNIT_PROPERTY_NAME = "Organizational Unit";
@@ -56,23 +61,27 @@ public class OwnerCertificate {
     public OwnerCertificate() {
     }
 
-    public OwnerCertificate(Long id, String commonName, String organizationalUnit, String organization, String locality, String stateProvince, String country) {
+    public OwnerCertificate(Long id, String commonName, String emailAddress, String organizationalUnit, String organization, String locality, String stateProvince, String country, String fullCertificate) {
         this.id = id;
         this.commonName = commonName;
+        this.emailAddress = emailAddress;
         this.organizationalUnit = organizationalUnit;
         this.organization = organization;
         this.locality = locality;
         this.stateProvince = stateProvince;
         this.country = country;
+        this.fullCertificate = fullCertificate;
     }
 
-    public OwnerCertificate(String commonName, String organizationalUnit, String organization, String locality, String stateProvince, String country) {
+    public OwnerCertificate(String commonName, String emailAddress, String organizationalUnit, String organization, String locality, String stateProvince, String country, String fullCertificate) {
         this.commonName = commonName;
+        this.emailAddress = emailAddress;
         this.organizationalUnit = organizationalUnit;
         this.organization = organization;
         this.locality = locality;
         this.stateProvince = stateProvince;
         this.country = country;
+        this.fullCertificate = fullCertificate;
     }
 
     public Long getId() {
@@ -131,6 +140,14 @@ public class OwnerCertificate {
         this.country = country;
     }
 
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
     public String getFullCertificate() {
         return fullCertificate;
     }
@@ -150,7 +167,10 @@ public class OwnerCertificate {
         OwnerCertificate certificate = new OwnerCertificate();
 
         // Process the certificate String
-        String[] certParts = certificateString.split(",");
+        String[] commaParts = certificateString.split(",");
+        String[] colonParts = certificateString.split(";");
+        String[] certParts = (commaParts.length > colonParts.length) ? commaParts : colonParts;
+
 
         for (String property : certParts) {
             String[] kvPair = property.split(":");
@@ -177,6 +197,10 @@ public class OwnerCertificate {
                 case LOCALITY_SHORT_PROPERTY_NAME:
                     certificate.setLocality(kvPair[1]);
                     break;
+                case EMAIL_ADDRESS_PROPERTY_NAME:
+                case EMAIL_ADDRESS_SHORT_PROPERTY_NAME:
+                    certificate.setEmailAddress(kvPair[1]);
+                    break;
                 case STATE_PROVINCE_PROPERTY_NAME:
                 case STATE_PROVINCE_SHORT_PROPERTY_NAME:
                     certificate.setStateProvince(kvPair[1]);
@@ -186,7 +210,7 @@ public class OwnerCertificate {
                     certificate.setCountry(kvPair[1]);
                     break;
                 default:
-                    System.out.println("No Match");
+                    System.out.println(String.format("No Match generating certificate values: %s, %s", kvPair[0], kvPair[1]));
 
             }
         }
@@ -200,6 +224,7 @@ public class OwnerCertificate {
         return "OwnerCertificate{" +
                 "id=" + id +
                 ", commonName='" + commonName + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
                 ", organizationalUnit='" + organizationalUnit + '\'' +
                 ", organization='" + organization + '\'' +
                 ", locality='" + locality + '\'' +

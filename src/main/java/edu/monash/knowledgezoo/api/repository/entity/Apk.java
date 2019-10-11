@@ -18,36 +18,63 @@ public class Apk {
 
     @JsonProperty("Name")
     private String name;
+    public static final String NAME_PROPERTY_NAME = "name";
+
 
     @Index(unique = true)
     @JsonProperty("SHA256")
     private String sha256;
+    public static final String SHA256_PROPERTY_NAME = "SHA256";
+
 
     @JsonProperty("Size")
     private Long size;
+    public static final String SIZE_PROPERTY_NAME = "size";
+
 
     @Relationship(type = "DECLARES")
     @JsonProperty("Permissions")
     private Set<Permission> permissions = new HashSet<>();
+    public static final String PERMISSIONS_PROPERTY_NAME = "permission";
+
 
     @Relationship(type = "DEVELOPED_USING")
     @JsonProperty("Minimum SDK")
     private SDKVersion minimumSDK;
+    public static final String MINIMUM_SDK_PROPERTY_NAME = "minSDKVersion";
+
 
     @Relationship(type = "SIGNED_BY")
     @JsonProperty("Certificate(Owner)")
     private OwnerCertificate ownerCertificate;
+    public static final String OWNER_CERTIFICATE_PROPERTY_NAME = "certificate(owner)";
+
 
     @Relationship(type = "SIGNED_BY")
     @JsonProperty("Certificate(Fingerprint)")
     private FingerprintCertificate fingerprintCertificate;
-
-//   @Relationship(type = "HAS")
-//   private List<ApiPackage> packages = new ArrayList<>();
-//
+    public static final String FINGERPRINT_CERTIFICATE_PROPERTY_NAME = "certificate(fingerprint)";
 
 
-    public static final String MINIMUM_SDK_PROPERTY_NAME = "minSDKVersion";
+    @JsonProperty("Version Code")
+    private Integer versionCode;
+    public static final String VERSION_CODE_PROPERTY_NAME = "versionCode";
+
+
+    @JsonProperty("Version Name")
+    private String versionName;
+    public static final String VERSION_NAME_PROPERTY_NAME = "versionName";
+
+
+    @Relationship(type = "USES")
+    private Set<Activity> activities = new HashSet<>();
+    public static final String ACTIVITIES_PROPERTY_NAME = "activity";
+
+
+    @Relationship(type = "USES")
+    private Set<Api> apis = new HashSet<>();
+    public static final String APIS_PROPERTY_NAME = "API";
+
 
     public Apk() {
     }
@@ -65,7 +92,7 @@ public class Apk {
         this.size = size;
     }
 
-    public Apk(String name, String sha256, Long size, Set<Permission> permissions, SDKVersion minimumSDK, OwnerCertificate ownerCertificate, FingerprintCertificate fingerprintCertificate) {
+    public Apk(String name, String sha256, Long size, Set<Permission> permissions, SDKVersion minimumSDK, OwnerCertificate ownerCertificate, FingerprintCertificate fingerprintCertificate, Integer versionCode, String versionName, Set<Api> apis) {
         this.name = name;
         this.sha256 = sha256;
         this.size = size;
@@ -73,6 +100,9 @@ public class Apk {
         this.minimumSDK = minimumSDK;
         this.ownerCertificate = ownerCertificate;
         this.fingerprintCertificate = fingerprintCertificate;
+        this.versionCode = versionCode;
+        this.versionName = versionName;
+        this.apis = apis;
     }
 
     public Long getId() {
@@ -143,6 +173,38 @@ public class Apk {
         this.fingerprintCertificate = fingerprintCertificate;
     }
 
+    public Set<Api> getApis() {
+        return apis;
+    }
+
+    public void setApis(Set<Api> apis) {
+        this.apis = apis;
+    }
+
+    public Integer getVersionCode() {
+        return versionCode;
+    }
+
+    public void setVersionCode(Integer versionCode) {
+        this.versionCode = versionCode;
+    }
+
+    public String getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
+
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
+    }
+
     @Override
     public String toString() {
         return "Apk{" +
@@ -154,6 +216,25 @@ public class Apk {
                 ", minimumSDK=" + minimumSDK +
                 ", ownerCertificate=" + ownerCertificate +
                 ", fingerprintCertificate=" + fingerprintCertificate +
+                ", versionCode='" + versionCode + '\'' +
+                ", versionName='" + versionName + '\'' +
+                ", apis=" + apis.size() +
                 '}';
+    }
+
+    public void addApi(Api api) {
+        if (this.apis == null)
+            this.apis = new HashSet<>();
+
+        if (api != null)
+            this.apis.add(api);
+    }
+
+    public void addActivity(Activity activity) {
+        if (this.activities == null)
+            this.activities = new HashSet<>();
+
+        if (activity != null)
+            this.activities.add(activity);
     }
 }

@@ -1,21 +1,16 @@
 package edu.monash.knowledgezoo.api.repository;
 
-import edu.monash.knowledgezoo.api.repository.entity.ApiPackage;
+import edu.monash.knowledgezoo.api.repository.entity.Activity;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
-import java.util.List;
 
-public interface ApiPackageRepository extends Neo4jRepository<ApiPackage, Long> {
+public interface ActivityRepository extends Neo4jRepository<Activity, Long> {
 
-    List<ApiPackage> findByName(@Param("name") String name);
+    Activity findByName(@Param("name") String name);
 
-    ApiPackage findByNameEquals(@Param("name") String name);
-
-    Collection<ApiPackage> findByNameLike(@Param("name") String name);
-
-    Collection<ApiPackage> findByLibrary(@Param("isLibrary") boolean isLibrary);
+    Collection<Activity> findByNameLike(@Param("name") String name);
 
 //    ApiPackage findByGenericName(@Param("genericName") String genericName);
 
