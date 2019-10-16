@@ -20,9 +20,10 @@ public class Api {
     @Index(unique = true)
     @JsonProperty("Name")
     private String name;
-
-    @Relationship(type = "USED_BY")
-    private Set<ApiPackage> packages = new HashSet<>();
+//
+//    @Relationship(type = "USED_BY")
+//    @JsonIgnore
+//    private Set<ApiPackage> packages = new HashSet<>();
 
     public Api() {
     }
@@ -53,19 +54,19 @@ public class Api {
         this.name = name;
     }
 
-    public Set<ApiPackage> getPackages() {
-        return packages;
-    }
-
-    public void addPackage(ApiPackage newPackage) {
-        if (newPackage != null) {
-            if (this.packages == null)
-                this.packages = new HashSet<>();
-            this.packages.add(newPackage);
-        }
-    }
-
-    public void setPackages(Set<ApiPackage> packages) {
-        this.packages = packages;
-    }
+//    public Set<ApiPackage> getPackages() {
+//        return packages;
+//    }
+//
+//    public void addPackage(ApiPackage newPackage) {
+//        if (newPackage != null) {
+//            if (this.packages == null)
+//                this.packages = new HashSet<>();
+//            this.packages.add(newPackage);
+//        }
+//    }
+//
+//    public void setPackages(Set<ApiPackage> packages) {
+//        this.packages = packages;
+//    }
 }

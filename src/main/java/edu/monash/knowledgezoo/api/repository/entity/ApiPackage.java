@@ -2,10 +2,10 @@ package edu.monash.knowledgezoo.api.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.Index;
-import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @NodeEntity(label = "Package")
 public class ApiPackage {
@@ -22,8 +22,8 @@ public class ApiPackage {
     @JsonProperty("Is Library")
     private boolean isLibrary;
 
-//    @Relationship(type = "CONTAINS", direction = Relationship.INCOMING)
-//    private Set<Api> apis = new HashSet<>();
+    @Relationship(type = "CONTAINS", direction = Relationship.INCOMING)
+    private Set<Api> apis = new HashSet<>();
 
     public ApiPackage() {
     }
@@ -56,21 +56,21 @@ public class ApiPackage {
         isLibrary = library;
     }
 
-//    public Set<Api> getApis() {
-//        return apis;
-//    }
-//
-//    public void addApis(Api api) {
-//        if (api != null) {
-//            if (this.apis == null)
-//                this.apis = new HashSet<>();
-//            this.apis.add(api);
-//        }
-//    }
-//
-//    public void setApis(Set<Api> apis) {
-//        this.apis = apis;
-//    }
+    public Set<Api> getApis() {
+        return apis;
+    }
+
+    public void addApis(Api api) {
+        if (api != null) {
+            if (this.apis == null)
+                this.apis = new HashSet<>();
+            this.apis.add(api);
+        }
+    }
+
+    public void setApis(Set<Api> apis) {
+        this.apis = apis;
+    }
 
 
 }

@@ -7,7 +7,7 @@ import org.neo4j.ogm.annotation.*;
 import org.neo4j.ogm.annotation.typeconversion.EnumString;
 
 @RelationshipEntity(type = "COMPONENT")
-public class ReleaseTagApi {
+public class ReleaseTagApiRelationship {
 
     public enum State {
         // from the database to allow flexibility
@@ -33,15 +33,15 @@ public class ReleaseTagApi {
     @EndNode
     private Api api;
 
-    public ReleaseTagApi() {
+    public ReleaseTagApiRelationship() {
     }
 
-    public ReleaseTagApi(State state, Api api) {
+    public ReleaseTagApiRelationship(State state, Api api) {
         this.state = state;
         this.api = api;
     }
 
-    public ReleaseTagApi(State state, ReleaseTag releaseTag, Api api) {
+    public ReleaseTagApiRelationship(State state, ReleaseTag releaseTag, Api api) {
         this.state = state;
         this.releaseTag = releaseTag;
         this.api = api;

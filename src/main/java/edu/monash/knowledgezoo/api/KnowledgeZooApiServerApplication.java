@@ -20,7 +20,8 @@ public class KnowledgeZooApiServerApplication {
 //        context.getBean(ReleaseTagTestDataService.class).generateTestData();
 //        context.getBean(ApkTestDataService.class).removeApkData();
 //        System.out.println("Old Apps removed");
-        context.getBean(JsonApkDataImporterService.class).parseFolder("C:\\Uni\\FIT4003\\Content\\JSON");
+        context.getBean(JsonApkDataImporterService.class).parseFolder("C:\\Uni\\FIT4003\\Content\\testing_apps", 1);
+//        context.getBean(JsonApkDataImporterService.class).parseFolder("C:\\Uni\\FIT4003\\Content\\JSON");
 
         // todo: Rename Tags
 //        context.getBean(ReleaseTagRenameService.class).renamePrefixedTags();
