@@ -178,6 +178,8 @@ public class JsonApkDataImporterService {
             // Assigning Apis
             jsonArray = (JSONArray) jo.get("API");
             System.out.printf("\t\tProcessing %d Apis...\n", jsonArray.size());
+            System.out.print("\t\tSaved Apis: ");
+            int count = 1;
             for (JSONObject apiObj : new ArrayList<JSONObject>(jsonArray)) {
                 for (String apiKey : (Set<String>) apiObj.keySet()) {
                     // Check existance
@@ -187,7 +189,9 @@ public class JsonApkDataImporterService {
                     if (api == null) {
                         api = new Api(apiKey);
                         apiRepo.save(api);
-                    }
+                    } else
+                        System.out.print("(API Found) - ");
+
 //                    System.out.println("API: " + apiKey);
                     JSONArray apiPackages = (JSONArray) apiObj.get(apiKey);
                     Iterator<String> jsonPackages = (Iterator<String>) apiPackages.iterator();
@@ -195,6 +199,7 @@ public class JsonApkDataImporterService {
                         String currentPackageName = jsonPackages.next().replace('/', '.').trim();
                         if (currentPackageName.length() > 0) {
                             List<ApiPackage> packageList = packageRepo.findByName(currentPackageName);
+                            System.out.printf("(Processing %d Packages) - ", packageList.size());
                             try {
                                 ApiPackage apiPackage = packageRepo.findByNameEquals(currentPackageName);
                                 if (apiPackage == null) {
@@ -215,12 +220,13 @@ public class JsonApkDataImporterService {
                             System.out.printf("\t\t\t--Empty Package for: %s, API: %s\n", apk.getName(), api.getName());
                     }
                     apiRepo.save(api);
+                    System.out.printf("%d: %s, ", count, api.getName());
+                    System.out.println();
                     apk.addApi(api);
                 }
             }
-
             // Save Apk
-            System.out.println("\t\tSaving Apk...");
+            System.out.println("\n\t\tSaving Apk...");
             apkRepo.save(apk);
             System.out.println("Saved Apk: " + apk.getName());
             return apk;
