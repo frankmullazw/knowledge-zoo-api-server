@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.neo4j.ogm.annotation.*;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -60,11 +61,19 @@ public class ApiPackage {
         return apis;
     }
 
-    public void addApis(Api api) {
+    public void addApi(Api api) {
         if (api != null) {
             if (this.apis == null)
                 this.apis = new HashSet<>();
             this.apis.add(api);
+        }
+    }
+
+    public void addApis(Collection<Api> apis) {
+        if (apis != null) {
+            if (this.apis == null)
+                this.apis = new HashSet<>();
+            this.apis.addAll(apis);
         }
     }
 

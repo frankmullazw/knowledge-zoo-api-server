@@ -70,7 +70,7 @@ public class JsonApkDataImporterService {
                         apks.add(apk);
                     // Clean up and add data
                     count++;
-                    System.out.printf("Processed App No: %d of %d", count, files.size());
+                    System.out.printf("Processed App File No: %d of %d\n", count, files.size());
                     if (limit != null && count >= limit)
                         return apks;
                 } catch (IOException | ParseException e) {
@@ -227,7 +227,6 @@ public class JsonApkDataImporterService {
         // Assigning Apis
         JSONArray jsonApiArray = (JSONArray) jo.get("API");
         System.out.printf("\t\tProcessing %d Apis...\n", jsonApiArray.size());
-        System.out.print("\t\tSaved Apis: ");
         int count = 1;
         for (JSONObject apiObj : new ArrayList<JSONObject>(jsonApiArray)) {
             for (String apiKey : (Set<String>) apiObj.keySet()) {
@@ -240,8 +239,8 @@ public class JsonApkDataImporterService {
                     api = new Api(apiKey);
                     apiRepo.save(api);
                 } else
-                    System.out.print("(API Found) - ");
-                System.out.printf("API[%d of %d]: %s ", count++, jsonApiArray.size(), api.getName());
+                    System.out.print("\t\t(API Found) - ");
+                System.out.printf("\t\tAPI[%d of %d]: %s ", count++, jsonApiArray.size(), api.getName());
                 apiPackageRelationship.setApi(api);
 
 //                    System.out.println("API: " + apiKey);
@@ -261,14 +260,13 @@ public class JsonApkDataImporterService {
 //                            System.out.printf("Existing Package: %s ", apiPackage.getName());
                             ;
                         }
+                        // todo: Determine whether we want to save the package apis or not
+//                        apiPackage.addApi(api);
+//                        packageRepo.save(apiPackage);
                         packages.add(apiPackage);
-//                        api.addPackage(apiPackage);
-                        // todo: Determine whether we are saving packages like this or not
                     } else
                         System.out.printf("\t\t\t--Empty Package for: %s, API: %s\n", apk.getName(), api.getName());
                 }
-                // todo: Determine whether we are saving packages like this or not
-//                apiRepo.save(api);
                 apk.addApiandPackages(api, packages);
             }
         }
