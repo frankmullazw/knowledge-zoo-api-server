@@ -34,7 +34,17 @@ public class ReleaseTagTestDataService {
     private void generateTestReleases() {
         ReleaseTag tag = new ReleaseTag("refs/tags/android-4.2_r1");
         tag.addReleaseApi(new Api("android.app.admin.DevicePolicyManager.createUser(android.content.ComponentName, java.lang.String)")
-                , ReleaseTagApiRelationship.State.INTRODUCED);
+                , ReleaseTagApiRelationship.State.INTRODUCE);
         releaseTagRepo.save(tag);
+    }
+
+    public void testDataRetrieval() {
+        ReleaseTag tag = releaseTagRepo.findByName("afw-test-harness-1.5");
+        if (tag != null) {
+            System.out.printf("Tag found: %s\n", tag.getName());
+            for (ReleaseTagApiRelationship apiRelationship : tag.getReleaseTagApiRelationships())
+                System.out.printf("Api: %s\n", apiRelationship.getApi().getName());
+        } else
+            System.out.println("Not Found!");
     }
 }

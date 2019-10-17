@@ -12,6 +12,8 @@ public interface ReleaseTagRepository extends Neo4jRepository<ReleaseTag, Long> 
 
     Collection<ReleaseTag> findByNameLike(@Param("name") String name);
 
+    Collection<ReleaseTag> findByReleaseTagApiRelationships(@Param("name") String name);
+
     // todo: Add release date interfaces
 
 //    @Query("MATCH (m:Apk)<-[r:ACTED_IN]-(a:Person) RETURN m,r,a LIMIT {limit}")

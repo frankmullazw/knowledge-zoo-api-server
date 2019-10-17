@@ -32,6 +32,10 @@ public class Apk {
     private Long size;
     public static final String SIZE_PROPERTY_NAME = "size";
 
+    @JsonProperty("Package Name")
+    private String packageName;
+    public static final String PACKAGE_NAME_PROPERTY_NAME = "Package Name:";
+
 
     @Relationship(type = "DECLARES")
     @JsonProperty("Permissions")
@@ -93,16 +97,19 @@ public class Apk {
         this.size = size;
     }
 
-    public Apk(String name, String sha256, Long size, Set<Permission> permissions, SDKVersion minimumSDK, OwnerCertificate ownerCertificate, FingerprintCertificate fingerprintCertificate, Integer versionCode, String versionName, Set<ApiPackageRelationship> apiPackageRelationships) {
+    public Apk(Long id, String name, String sha256, Long size, String packageName, Set<Permission> permissions, SDKVersion minimumSDK, OwnerCertificate ownerCertificate, FingerprintCertificate fingerprintCertificate, Integer versionCode, String versionName, Set<Activity> activities, Set<ApiPackageRelationship> apiPackageRelationships) {
+        this.id = id;
         this.name = name;
         this.sha256 = sha256;
         this.size = size;
+        this.packageName = packageName;
         this.permissions = permissions;
         this.minimumSDK = minimumSDK;
         this.ownerCertificate = ownerCertificate;
         this.fingerprintCertificate = fingerprintCertificate;
         this.versionCode = versionCode;
         this.versionName = versionName;
+        this.activities = activities;
         this.apiPackageRelationships = apiPackageRelationships;
     }
 
@@ -204,6 +211,14 @@ public class Apk {
 
     public void setActivities(Set<Activity> activities) {
         this.activities = activities;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
     @Override
