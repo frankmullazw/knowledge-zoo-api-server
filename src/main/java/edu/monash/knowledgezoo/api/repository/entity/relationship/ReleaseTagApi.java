@@ -6,7 +6,7 @@ import edu.monash.knowledgezoo.api.repository.entity.ReleaseTag;
 import org.neo4j.ogm.annotation.*;
 import org.neo4j.ogm.annotation.typeconversion.EnumString;
 
-@RelationshipEntity(type = "COMPONENT")
+@RelationshipEntity(type = "CONTAINS")
 public class ReleaseTagApi {
 
     public enum State {

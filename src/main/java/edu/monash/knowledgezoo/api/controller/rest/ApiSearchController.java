@@ -1,28 +1,40 @@
 package edu.monash.knowledgezoo.api.controller.rest;
 
-import edu.monash.knowledgezoo.api.repository.entity.Api;
-import edu.monash.knowledgezoo.api.service.ApiService;
+import edu.monash.knowledgezoo.api.repository.model.PageFindAPKsByLike;
+import edu.monash.knowledgezoo.api.repository.model.SearchByKeywordForm;
+import edu.monash.knowledgezoo.api.repository.model.SearchResponse;
 import edu.monash.knowledgezoo.api.service.ApkService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
 @RestController
 @RequestMapping("api/search/")
+@CrossOrigin(origins = "*")
 public class ApiSearchController {
     private final ApkService apkService;
 
-    private final ApiService signatureService;
-
-    public ApiSearchController(ApkService apkService, ApiService signatureService) {
+    public ApiSearchController(ApkService apkService) {
         this.apkService = apkService;
-        this.signatureService = signatureService;
     }
 
-    private Collection<Api> searchApi(@RequestParam(name = "apName") String apName) {
-        return signatureService.findByNameLike(apName);
+    @PostMapping("/byKeyword")
+    public SearchResponse searchByKeyword(@RequestBody SearchByKeywordForm form) {
+        try {
+            SearchResponse res = new SearchResponse();
+            PageFindAPKsByLike result = apkService.findByPermissionLike(form.keyword, form.pageIdx);
+            res.type = "Permission";
+            if (result.apks.size() == 0) {
+                res.type = "API";
+                result = apkService.findByApiNameLike(form.keyword, form.pageIdx);
+            }
+            res.apks = result.apks;
+            res.hasNext = result.hasNext;
+            //res.detail = result.detail;
+            return res;
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
 }

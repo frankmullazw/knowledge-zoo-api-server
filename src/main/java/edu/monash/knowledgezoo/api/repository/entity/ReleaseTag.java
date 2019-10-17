@@ -37,6 +37,10 @@ public class ReleaseTag {
     @JsonIgnore
     private ReleaseTag nextTag;
 
+//    @Relationship
+//    private Set<ReleaseTagApi> apis = new HashSet<>();
+    //https://stackoverflow.com/questions/46639161/spring-data-neo4j-relationship-in-entity
+
     @JsonIgnore
     private Set<ReleaseTagApi> releaseTagApis = new HashSet<>();
 

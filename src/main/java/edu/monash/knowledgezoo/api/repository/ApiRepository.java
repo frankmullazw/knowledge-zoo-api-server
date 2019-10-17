@@ -1,6 +1,7 @@
 package edu.monash.knowledgezoo.api.repository;
 
 import edu.monash.knowledgezoo.api.repository.entity.Api;
+import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -10,7 +11,11 @@ public interface ApiRepository extends Neo4jRepository<Api, Long> {
 
     Api findByName(@Param("name") String name);
 
-    Collection<Api> findByNameLike(@Param("name") String name);
+    @Query("MATCH (:APK)-[:USES]->(api:API)<-[r:CONTAINS]-(:Tag) where api.name CONTAINS {name} RETURN api, r limit 1")
+    Api findByNameLike(@Param("name") String name);
+
+    @Query("MATCH (api:API)<-[r:USES]-(:APK) RETURN DISTINCT api, COUNT(r) ORDER BY COUNT(r) DESC LIMIT 10")
+    Collection<Api> getTop10Apis();
 
 //    ApiPackage findByGenericName(@Param("genericName") String genericName);
 
