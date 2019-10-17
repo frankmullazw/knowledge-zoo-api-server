@@ -2,6 +2,7 @@ package edu.monash.knowledgezoo.api.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import edu.monash.knowledgezoo.api.repository.entity.relationship.ApiPackageRelationship;
 import org.neo4j.ogm.annotation.*;
 
 import java.util.HashSet;
@@ -71,8 +72,8 @@ public class Apk {
     public static final String ACTIVITIES_PROPERTY_NAME = "activity";
 
 
-    @Relationship(type = "USES")
-    private Set<Api> apis = new HashSet<>();
+    @Relationship(type = "APK_API_PACKAGE")
+    private Set<ApiPackageRelationship> apiPackageRelationships = new HashSet<>();
     public static final String APIS_PROPERTY_NAME = "API";
 
 
@@ -92,7 +93,7 @@ public class Apk {
         this.size = size;
     }
 
-    public Apk(String name, String sha256, Long size, Set<Permission> permissions, SDKVersion minimumSDK, OwnerCertificate ownerCertificate, FingerprintCertificate fingerprintCertificate, Integer versionCode, String versionName, Set<Api> apis) {
+    public Apk(String name, String sha256, Long size, Set<Permission> permissions, SDKVersion minimumSDK, OwnerCertificate ownerCertificate, FingerprintCertificate fingerprintCertificate, Integer versionCode, String versionName, Set<ApiPackageRelationship> apiPackageRelationships) {
         this.name = name;
         this.sha256 = sha256;
         this.size = size;
@@ -102,7 +103,7 @@ public class Apk {
         this.fingerprintCertificate = fingerprintCertificate;
         this.versionCode = versionCode;
         this.versionName = versionName;
-        this.apis = apis;
+        this.apiPackageRelationships = apiPackageRelationships;
     }
 
     public Long getId() {
@@ -173,12 +174,12 @@ public class Apk {
         this.fingerprintCertificate = fingerprintCertificate;
     }
 
-    public Set<Api> getApis() {
-        return apis;
+    public Set<ApiPackageRelationship> getApiPackageRelationships() {
+        return apiPackageRelationships;
     }
 
-    public void setApis(Set<Api> apis) {
-        this.apis = apis;
+    public void setApiPackageRelationships(Set<ApiPackageRelationship> apiPackageRelationships) {
+        this.apiPackageRelationships = apiPackageRelationships;
     }
 
     public Integer getVersionCode() {
@@ -218,16 +219,35 @@ public class Apk {
                 ", fingerprintCertificate=" + fingerprintCertificate +
                 ", versionCode='" + versionCode + '\'' +
                 ", versionName='" + versionName + '\'' +
-                ", apis=" + apis.size() +
+                ", apis=" + apiPackageRelationships.size() +
                 '}';
     }
 
-    public void addApi(Api api) {
-        if (this.apis == null)
-            this.apis = new HashSet<>();
+    public void addApi(ApiPackageRelationship apiPackageRelationship) {
+        if (this.apiPackageRelationships == null)
+            this.apiPackageRelationships = new HashSet<ApiPackageRelationship>();
+        if (apiPackageRelationship != null) {
+            apiPackageRelationship.setApk(this);
+            this.apiPackageRelationships.add(apiPackageRelationship);
+        }
+    }
 
-        if (api != null)
-            this.apis.add(api);
+    public void addApi(Api api) {
+        if (this.apiPackageRelationships == null)
+            this.apiPackageRelationships = new HashSet<ApiPackageRelationship>();
+        if (api != null) {
+            ApiPackageRelationship relationship = new ApiPackageRelationship(this, api);
+            this.apiPackageRelationships.add(relationship);
+        }
+    }
+
+    public void addApiandPackages(Api api, Set<ApiPackage> packages) {
+        if (this.apiPackageRelationships == null)
+            this.apiPackageRelationships = new HashSet<ApiPackageRelationship>();
+        if (api != null) {
+            ApiPackageRelationship relationship = new ApiPackageRelationship(this, api, packages);
+            this.apiPackageRelationships.add(relationship);
+        }
     }
 
     public void addActivity(Activity activity) {

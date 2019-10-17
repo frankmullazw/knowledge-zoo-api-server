@@ -2,7 +2,7 @@ package edu.monash.knowledgezoo.api.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.monash.knowledgezoo.api.repository.entity.relationship.ReleaseTagApi;
+import edu.monash.knowledgezoo.api.repository.entity.relationship.ReleaseTagApiRelationship;
 import org.neo4j.ogm.annotation.*;
 
 import java.sql.Date;
@@ -38,7 +38,7 @@ public class ReleaseTag {
     private ReleaseTag nextTag;
 
     @JsonIgnore
-    private Set<ReleaseTagApi> releaseTagApis = new HashSet<>();
+    private Set<ReleaseTagApiRelationship> releaseTagApiRelationships = new HashSet<>();
 
     public ReleaseTag() {
     }
@@ -79,26 +79,26 @@ public class ReleaseTag {
         this.sdkVersion = sdkVersion;
     }
 
-    public Set<ReleaseTagApi> getReleaseTagApis() {
-        return releaseTagApis;
+    public Set<ReleaseTagApiRelationship> getReleaseTagApiRelationships() {
+        return releaseTagApiRelationships;
     }
 
-    public void setReleaseTagApis(Set<ReleaseTagApi> releaseTagApis) {
-        this.releaseTagApis = releaseTagApis;
+    public void setReleaseTagApiRelationships(Set<ReleaseTagApiRelationship> releaseTagApiRelationships) {
+        this.releaseTagApiRelationships = releaseTagApiRelationships;
     }
 
-    public void addReleaseApi(ReleaseTagApi releaseTagApi) {
+    public void addReleaseApi(ReleaseTagApiRelationship releaseTagApiRelationship) {
         // todo: Duplication handling
-        if (releaseTagApi != null) {
-            releaseTagApi.setReleaseTag(this);
-            this.releaseTagApis.add(releaseTagApi);
+        if (releaseTagApiRelationship != null) {
+            releaseTagApiRelationship.setReleaseTag(this);
+            this.releaseTagApiRelationships.add(releaseTagApiRelationship);
         }
     }
 
-    public void addReleaseApi(Api api, ReleaseTagApi.State state) {
+    public void addReleaseApi(Api api, ReleaseTagApiRelationship.State state) {
         // todo: Duplication handling
         if (api != null && state != null) {
-            this.releaseTagApis.add(new ReleaseTagApi(state, this, api));
+            this.releaseTagApiRelationships.add(new ReleaseTagApiRelationship(state, this, api));
         }
     }
 
@@ -117,7 +117,7 @@ public class ReleaseTag {
                 ", name='" + name + '\'' +
                 ", releaseDate=" + releaseDate +
                 ", sdkVersion=" + sdkVersion +
-                ", releaseTagApis=" + releaseTagApis +
+                ", releaseTagApis=" + releaseTagApiRelationships +
                 '}';
     }
 }
