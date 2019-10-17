@@ -5,11 +5,11 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 public interface ApiPackageRepository extends Neo4jRepository<ApiPackage, Long> {
 
-    List<ApiPackage> findByName(@Param("name") String name);
+    Set<ApiPackage> findByName(@Param("name") String name);
 
     ApiPackage findByNameEquals(@Param("name") String name);
 

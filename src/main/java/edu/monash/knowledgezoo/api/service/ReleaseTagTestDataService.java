@@ -4,7 +4,7 @@ import edu.monash.knowledgezoo.api.repository.ApiRepository;
 import edu.monash.knowledgezoo.api.repository.ReleaseTagRepository;
 import edu.monash.knowledgezoo.api.repository.entity.Api;
 import edu.monash.knowledgezoo.api.repository.entity.ReleaseTag;
-import edu.monash.knowledgezoo.api.repository.entity.relationship.ReleaseTagApi;
+import edu.monash.knowledgezoo.api.repository.entity.relationship.ReleaseTagApiRelationship;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +34,7 @@ public class ReleaseTagTestDataService {
     private void generateTestReleases() {
         ReleaseTag tag = new ReleaseTag("refs/tags/android-4.2_r1");
         tag.addReleaseApi(new Api("android.app.admin.DevicePolicyManager.createUser(android.content.ComponentName, java.lang.String)")
-                , ReleaseTagApi.State.INTRODUCED);
+                , ReleaseTagApiRelationship.State.INTRODUCED);
         releaseTagRepo.save(tag);
     }
 }

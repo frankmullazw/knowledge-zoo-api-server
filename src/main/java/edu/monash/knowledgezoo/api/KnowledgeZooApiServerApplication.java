@@ -2,7 +2,6 @@ package edu.monash.knowledgezoo.api;
 
 import edu.monash.knowledgezoo.api.utils.JsonApkDataImporterService;
 import edu.monash.knowledgezoo.api.utils.SimpleStopWatchTimer;
-import edu.monash.knowledgezoo.api.utils.onetimescripts.ReleaseTagRenameService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -21,15 +20,15 @@ public class KnowledgeZooApiServerApplication {
 //        context.getBean(ReleaseTagTestDataService.class).generateTestData();
 //        context.getBean(ApkTestDataService.class).removeApkData();
 //        System.out.println("Old Apps removed");
-//        context.getBean(JsonApkDataImporterService.class).parseFolder(
-//                "C:\\Uni\\FIT4003\\KnowledgeZooProjects\\knowledge-zoo-api-server\\extractData\\androguard-master\\Information\\JSON"
-//        );
+//        context.getBean(JsonApkDataImporterService.class).parseFolder("C:\\Uni\\FIT4003\\Content\\testing_apps", 1);
+//        context.getBean(JsonApkDataImporterService.class).parseFolder("C:\\Uni\\FIT4003\\Content\\JSON", null);
+//        context.getBean(JsonApkDataImporterService.class).parseFolder("/home/ubuntu/JSON", null);
 
         // todo: Rename Tags
 //        context.getBean(ReleaseTagRenameService.class).renamePrefixedTags();
-        context.getBean(JsonApkDataImporterService.class).parseFolder(
-                "C:\\Uni\\FIT4003\\Content\\testing_apps"
-        );
+//        context.getBean(JsonApkDataImporterService.class).parseFolder(
+//                "C:\\Uni\\FIT4003\\Content\\testing_apps"
+//        );
         System.out.printf("Done in :%s", stopWatchTimer.getMainTime().toString());
         stopWatchTimer.stop();
 //        context.getBean(ApkTestDataService.class).printTestNode();
