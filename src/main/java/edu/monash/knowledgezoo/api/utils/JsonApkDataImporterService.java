@@ -265,6 +265,7 @@ public class JsonApkDataImporterService {
 //                        packageRepo.save(apiPackage);
                         packages.add(apiPackage);
                     } else
+
                         System.out.printf("\t\t\t--Empty Package for: %s, API: %s\n", apk.getName(), api.getName());
                 }
                 apk.addApiandPackages(api, packages);
