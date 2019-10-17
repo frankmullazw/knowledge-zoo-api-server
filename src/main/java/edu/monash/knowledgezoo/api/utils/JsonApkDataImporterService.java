@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileReader;
@@ -80,7 +81,7 @@ public class JsonApkDataImporterService {
         return apks;
     }
 
-
+    @Transactional
     public Apk parseApkFile(File file) throws IOException, ParseException {
         JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader(file));
         if (jo != null) {
@@ -108,9 +109,10 @@ public class JsonApkDataImporterService {
 
     private Apk processBaseApkData(JSONObject jo) {
         // typecasting obj to JSONObject
-        String sha256 = (String) jo.get("SHA256");
-        String name = (String) jo.get("name");
-        String versionName = (String) jo.get("versionName");
+        String sha256 = (String) jo.get(Apk.SHA256_PROPERTY_NAME);
+        String name = (String) jo.get(Apk.NAME_PROPERTY_NAME);
+        String versionName = (String) jo.get(Apk.VERSION_NAME_PROPERTY_NAME);
+        String packageName = (String) jo.get(Apk.PACKAGE_NAME_PROPERTY_NAME);
 
         // Check the sha256 to see if we have the application so we can quickly skip the rest
         Apk apk = apkRepo.findBySha256(sha256);
@@ -125,9 +127,9 @@ public class JsonApkDataImporterService {
         System.out.println("Processing Apk: " + name);
 
 
-        String versionCode = (String) jo.get("versionCode");
-        Long size = (Long) jo.get("size");
-        String minSDKVersion = (String) jo.get("minSDKVersion");
+        String versionCode = (String) jo.get(Apk.VERSION_CODE_PROPERTY_NAME);
+        Long size = (Long) jo.get(Apk.SIZE_PROPERTY_NAME);
+        String minSDKVersion = (String) jo.get(Apk.MINIMUM_SDK_PROPERTY_NAME);
 
         // Process base properties
         System.out.println("\t\tSaving base properties...");
@@ -140,6 +142,7 @@ public class JsonApkDataImporterService {
         }
         apk.setVersionName(versionName);
         apk.setSize(size);
+        apk.setPackageName(packageName);
 
         // Check and Assign SDK
         try {
@@ -161,8 +164,8 @@ public class JsonApkDataImporterService {
     private void processApkCertificates(Apk apk, JSONObject jo) {
         // Check and Assign Certificates
         System.out.println("\t\tSaving Certificates");
-        String jsonCertificateFingerprint = (String) jo.get("certificate(fingerprint)");
-        String jsonCertificateOwner = (String) jo.get("certificate(owner)");
+        String jsonCertificateFingerprint = (String) jo.get(Apk.FINGERPRINT_CERTIFICATE_PROPERTY_NAME);
+        String jsonCertificateOwner = (String) jo.get(Apk.OWNER_CERTIFICATE_PROPERTY_NAME);
 
         FingerprintCertificate certificate = fingerprintCertificateRepo.findByName(jsonCertificateFingerprint);
         if (certificate == null) {
@@ -257,7 +260,6 @@ public class JsonApkDataImporterService {
 //                        packageRepo.save(apiPackage);
                         packages.add(apiPackage);
                     } else
-
                         System.out.printf("\t\t\t--Empty Package for: %s, API: %s\n", apk.getName(), api.getName());
                 }
                 apk.addApiandPackages(api, packages);

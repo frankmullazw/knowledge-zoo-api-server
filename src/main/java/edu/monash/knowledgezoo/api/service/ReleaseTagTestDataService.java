@@ -37,4 +37,14 @@ public class ReleaseTagTestDataService {
                 , ReleaseTagApiRelationship.State.INTRODUCE);
         releaseTagRepo.save(tag);
     }
+
+    public void testDataRetrieval() {
+        ReleaseTag tag = releaseTagRepo.findByName("afw-test-harness-1.5");
+        if (tag != null) {
+            System.out.printf("Tag found: %s\n", tag.getName());
+            for (ReleaseTagApiRelationship apiRelationship : tag.getReleaseTagApiRelationships())
+                System.out.printf("Api: %s\n", apiRelationship.getApi().getName());
+        } else
+            System.out.println("Not Found!");
+    }
 }

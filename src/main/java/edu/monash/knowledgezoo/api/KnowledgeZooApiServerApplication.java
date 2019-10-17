@@ -16,12 +16,12 @@ public class KnowledgeZooApiServerApplication {
         ConfigurableApplicationContext context = SpringApplication.run(KnowledgeZooApiServerApplication.class, args);
         SimpleStopWatchTimer stopWatchTimer = new SimpleStopWatchTimer();
         stopWatchTimer.start();
-//        context.getBean(ApkTestDataService.class).generateTestData();
+//        context.getBean(ReleaseTagTestDataService.class).testDataRetrieval();
 //        context.getBean(ReleaseTagTestDataService.class).generateTestData();
 //        context.getBean(ApkTestDataService.class).removeApkData();
 //        System.out.println("Old Apps removed");
 //        context.getBean(JsonApkDataImporterService.class).parseFolder("C:\\Uni\\FIT4003\\Content\\testing_apps", 1);
-//        context.getBean(JsonApkDataImporterService.class).parseFolder("C:\\Uni\\FIT4003\\Content\\JSON", null);
+        context.getBean(JsonApkDataImporterService.class).parseFolder("C:\\Uni\\FIT4003\\Content\\JSON", null);
 //        context.getBean(JsonApkDataImporterService.class).parseFolder("/home/ubuntu/JSON", null);
 
         // todo: Rename Tags
