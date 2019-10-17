@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class PermissionService {
@@ -29,4 +30,7 @@ public class PermissionService {
     public Permission findByGenericNameLike(String name) {
         return permissionRepository.findFirstByGenericName(name);
     }
+
+    @Transactional(readOnly = true)
+    public List<String> getAllPermissionName() { return permissionRepository.getAllPermissionName(); }
 }
