@@ -25,6 +25,12 @@ public class Api {
 //    @JsonIgnore
 //    private Set<ApiPackage> packages = new HashSet<>();
 
+    @JsonProperty("IntroduceTag")
+    public ReleaseTag introduceTag;
+
+    @JsonProperty("RemoveTag")
+    public ReleaseTag removeTag;
+
     public Api() {
     }
 

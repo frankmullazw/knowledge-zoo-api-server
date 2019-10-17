@@ -34,7 +34,7 @@ public class ReleaseTagTestDataService {
     private void generateTestReleases() {
         ReleaseTag tag = new ReleaseTag("refs/tags/android-4.2_r1");
         tag.addReleaseApi(new Api("android.app.admin.DevicePolicyManager.createUser(android.content.ComponentName, java.lang.String)")
-                , ReleaseTagApiRelationship.State.INTRODUCED);
+                , ReleaseTagApiRelationship.State.INTRODUCE);
         releaseTagRepo.save(tag);
     }
 }

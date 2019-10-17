@@ -1,6 +1,7 @@
 package edu.monash.knowledgezoo.api.repository;
 
 import edu.monash.knowledgezoo.api.repository.entity.ReleaseTag;
+import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -11,6 +12,12 @@ public interface ReleaseTagRepository extends Neo4jRepository<ReleaseTag, Long> 
     ReleaseTag findByName(@Param("name") String name);
 
     Collection<ReleaseTag> findByNameLike(@Param("name") String name);
+
+    @Query("MATCH (api:API{name: {0}})<-[:CONTAINS{state: \"INTRODUCE\"}]-(t:Tag) return t")
+    ReleaseTag findIntroduceTagOfApiByName(String name);
+
+    @Query("MATCH (api:API{name: {0}})<-[:CONTAINS{state: \"REMOVE\"}]-(t:Tag) return t")
+    ReleaseTag findRemoveTagOfApiByName(String name);
 
     // todo: Add release date interfaces
 
