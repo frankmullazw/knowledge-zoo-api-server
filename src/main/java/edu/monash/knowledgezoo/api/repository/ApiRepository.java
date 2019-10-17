@@ -11,10 +11,10 @@ public interface ApiRepository extends Neo4jRepository<Api, Long> {
 
     Api findByName(@Param("name") String name);
 
-    @Query("MATCH (:APK)-[:USES]->(api:API)<-[r:CONTAINS]-(:Tag) where api.name CONTAINS {name} RETURN api, r limit 1")
+    @Query("MATCH (:APK)-[:APK_API_PACKAGE]->(api:API)<-[r:CONTAINS]-(:Tag) where api.name CONTAINS {name} RETURN api, r limit 1")
     Api findByNameLike(@Param("name") String name);
 
-    @Query("MATCH (api:API)<-[r:USES]-(:APK) RETURN DISTINCT api, COUNT(r) ORDER BY COUNT(r) DESC LIMIT 10")
+    @Query("MATCH (api:API)<-[r:APK_API_PACKAGE]-(:APK) RETURN DISTINCT api, COUNT(r) ORDER BY COUNT(r) DESC LIMIT 10")
     Collection<Api> getTop10Apis();
 
 //    ApiPackage findByGenericName(@Param("genericName") String genericName);

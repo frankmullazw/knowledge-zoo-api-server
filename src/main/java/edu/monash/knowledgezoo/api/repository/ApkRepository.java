@@ -19,8 +19,8 @@ public interface ApkRepository extends Neo4jRepository<Apk, Long> {
             countQuery = "MATCH (p:Permission)<-[:DECLARES]-(apk:APK) WHERE p.id = {0} RETURN COUNT(DISTINCT apk)")
     Page<Apk> findByPermissionGenericName(String genericName, Pageable page);
 
-    @Query(value = "MATCH (api:API)<-[:USES]-(apk:APK) WHERE api.name = {0} RETURN DISTINCT apk",
-            countQuery = "MATCH (api:API)<-[:USES]-(apk:APK) WHERE api.name CONTAINS {0} RETURN COUNT(DISTINCT apk)")
+    @Query(value = "MATCH (api:API)<-[:APK_API_PACKAGE]-(apk:APK) WHERE api.name = {0} RETURN DISTINCT apk",
+            countQuery = "MATCH (api:API)<-[:APK_API_PACKAGE]-(apk:APK) WHERE api.name CONTAINS {0} RETURN COUNT(DISTINCT apk)")
     Page<Apk> findByApiName(String name, Pageable page);
 
 //    @Query("MATCH (m:Apk)<-[r:ACTED_IN]-(a:Person) RETURN m,r,a LIMIT {limit}")

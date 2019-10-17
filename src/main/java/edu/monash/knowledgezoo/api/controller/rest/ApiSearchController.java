@@ -30,7 +30,7 @@ public class ApiSearchController {
             }
             res.apks = result.apks;
             res.hasNext = result.hasNext;
-            //res.detail = result.detail;
+            res.detail = result.detail;
             return res;
         } catch (Exception e) {
             throw e;

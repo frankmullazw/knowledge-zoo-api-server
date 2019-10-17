@@ -7,7 +7,7 @@ import org.neo4j.ogm.annotation.*;
 import org.neo4j.ogm.annotation.typeconversion.EnumString;
 
 @RelationshipEntity(type = "CONTAINS")
-public class ReleaseTagApi {
+public class ReleaseTagApiRelationship {
 
     public enum State {
         // from the database to allow flexibility
