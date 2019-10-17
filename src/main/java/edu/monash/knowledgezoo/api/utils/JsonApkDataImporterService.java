@@ -8,7 +8,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileReader;
@@ -64,8 +63,7 @@ public class JsonApkDataImporterService {
         for (File file : files)
             if (file.length() > 0) {
                 try {
-                    JSONObject jo = parseFile(file);
-                    Apk apk = processApk(jo);
+                    Apk apk = parseApkFile(file);
                     if (apk != null)
                         apks.add(apk);
                     // Clean up and add data
@@ -83,14 +81,8 @@ public class JsonApkDataImporterService {
     }
 
 
-    public JSONObject parseFile(File file) throws IOException, ParseException {
-        return (JSONObject) new JSONParser().parse(new FileReader(file));
-    }
-
-
-    @Transactional
-    public Apk processApk(JSONObject jo) throws IOException, ParseException {
-
+    public Apk parseApkFile(File file) throws IOException, ParseException {
+        JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader(file));
         if (jo != null) {
             Apk apk = processBaseApkData(jo);
             if (apk.getId() != null) {

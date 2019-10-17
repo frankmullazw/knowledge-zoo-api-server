@@ -24,7 +24,7 @@ public class ReleaseTag {
     @JsonProperty("Name")
     private String name;
 
-//    @JsonProperty("Release Date")
+    //    @JsonProperty("Release Date")
     @JsonIgnore
     private Date releaseDate;
 
@@ -41,6 +41,7 @@ public class ReleaseTag {
 //    private Set<ReleaseTagApi> apis = new HashSet<>();
     //https://stackoverflow.com/questions/46639161/spring-data-neo4j-relationship-in-entity
 
+    @Relationship(type = "CONTAINS")
     @JsonIgnore
     private Set<ReleaseTagApiRelationship> releaseTagApiRelationships = new HashSet<>();
 

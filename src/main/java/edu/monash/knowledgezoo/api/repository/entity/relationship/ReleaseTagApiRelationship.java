@@ -12,8 +12,8 @@ public class ReleaseTagApiRelationship {
     public enum State {
         // from the database to allow flexibility
 
-        INTRODUCED,
-        REMOVED,
+        INTRODUCE,
+        REMOVE,
     }
 
 
@@ -23,6 +23,7 @@ public class ReleaseTagApiRelationship {
     private Long id;
 
 
+    @Property
     @EnumString(value = State.class)
     private State state;
 
