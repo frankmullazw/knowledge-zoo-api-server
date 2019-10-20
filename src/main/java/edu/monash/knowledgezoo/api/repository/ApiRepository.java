@@ -6,6 +6,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface ApiRepository extends Neo4jRepository<Api, Long> {
 
@@ -16,6 +17,9 @@ public interface ApiRepository extends Neo4jRepository<Api, Long> {
 
     @Query("MATCH (api:API)<-[r:APK_API_PACKAGE]-(:APK) RETURN DISTINCT api, COUNT(r) ORDER BY COUNT(r) DESC LIMIT 10")
     Collection<Api> getTop10Apis();
+
+    @Query("MATCH (:APK)-[:APK_API_PACKAGE]->(api:API)<-[r:CONTAINS]-(:Tag) RETURN DISTINCT (api.name)")
+    List<String> getAllApiName();
 
 //    ApiPackage findByGenericName(@Param("genericName") String genericName);
 

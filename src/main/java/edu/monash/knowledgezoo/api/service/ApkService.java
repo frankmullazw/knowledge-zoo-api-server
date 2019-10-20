@@ -19,12 +19,14 @@ import java.util.List;
 public class ApkService {
 
     private final ApkRepository apkRepository;
+    private final ReleaseTagService releaseTagService;
     private final PermissionService permissionService;
     private final ApiService apiService;
     private final Integer size = 10;
 
-    public ApkService(ApkRepository apkRepository, PermissionService permissionService, ApiService apiService) {
+    public ApkService(ApkRepository apkRepository, ReleaseTagService releaseTagService, PermissionService permissionService, ApiService apiService) {
         this.apkRepository = apkRepository;
+        this.releaseTagService = releaseTagService;
         this.permissionService = permissionService;
         this.apiService = apiService;
     }
@@ -67,6 +69,8 @@ public class ApkService {
     public PageFindAPKsByLike findByApiNameLike(String keyword, Integer pageIdx) {
         PageFindAPKsByLike res = new PageFindAPKsByLike();
         Api api = apiService.findByNameLike(keyword);
+        api.introduceTag = releaseTagService.findIntroduceTagOfApiByName(api.getName());
+        api.removeTag = releaseTagService.findRemoveTagOfApiByName(api.getName());
         if (api == null) {
             return res;
         }

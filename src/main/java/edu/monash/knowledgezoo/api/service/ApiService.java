@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sun.security.acl.AllPermissionsImpl;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class ApiService {
@@ -35,5 +36,10 @@ public class ApiService {
     @Transactional(readOnly = true)
     public Collection<Api> getTop10Apis() {
         return apiRepository.getTop10Apis();
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getAllApiName() {
+        return apiRepository.getAllApiName();
     }
 }

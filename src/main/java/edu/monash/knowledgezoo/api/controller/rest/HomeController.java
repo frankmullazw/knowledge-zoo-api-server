@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("api/")
 @CrossOrigin(origins = "*")
@@ -32,6 +35,18 @@ public class HomeController {
             res.numPermission = permissionService.getTotalNumberOfPermissions();
             res.top10Apis = apiService.getTop10Apis();
             res.top10Permissions = permissionService.getTop10Permissions();
+            return res;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @GetMapping("/allSuggestion")
+    public List<String> getAllSuggestion() {
+        try {
+            List<String> res = new ArrayList<>();
+            res.addAll(apiService.getAllApiName());
+            res.addAll(permissionService.getAllPermissionName());
             return res;
         } catch (Exception e) {
             throw e;

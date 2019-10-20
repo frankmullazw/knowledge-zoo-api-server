@@ -6,6 +6,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface PermissionRepository extends Neo4jRepository<Permission, Long> {
 
@@ -22,6 +23,9 @@ public interface PermissionRepository extends Neo4jRepository<Permission, Long> 
 
     @Query("MATCH (p:Permission) where toLower(p.genericName) CONTAINS toLower({genericName}) return p limit 1")
     Permission findFirstByGenericName(@Param("genericName") String genericName);
+
+    @Query("MATCH (p:Permission) RETURN DISTINCT (p.name)")
+    List<String> getAllPermissionName();
 
 //    @Query("MATCH (m:Apk)<-[r:ACTED_IN]-(a:Person) RETURN m,r,a LIMIT {limit}")
 //    Collection<Apk> graph(@Param("limit") int limit);

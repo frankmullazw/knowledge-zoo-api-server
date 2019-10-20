@@ -30,4 +30,10 @@ public class ReleaseTagService {
     public Collection<ReleaseTag> findByNameLike(String name) {
         return releaseTagRepo.findByNameLike(name);
     }
+
+    @Transactional(readOnly = true)
+    public ReleaseTag findIntroduceTagOfApiByName(String name) { return releaseTagRepo.findIntroduceTagOfApiByName(name); }
+
+    @Transactional(readOnly = true)
+    public ReleaseTag findRemoveTagOfApiByName(String name) { return releaseTagRepo.findRemoveTagOfApiByName(name); }
 }
