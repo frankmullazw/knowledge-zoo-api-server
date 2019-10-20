@@ -87,6 +87,7 @@ public class JsonApkDataImporterService {
         if (jo != null) {
             Apk apk = processBaseApkData(jo);
             if (apk.getId() != null) {
+                return null;
                 // This apk already exists
                 // todo: Perform any checks for this apk
             } else {
