@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface PermissionRepository extends Neo4jRepository<Permission, Long> {
 
@@ -26,6 +27,9 @@ public interface PermissionRepository extends Neo4jRepository<Permission, Long> 
 
     @Query("MATCH (p:Permission) RETURN DISTINCT (p.name)")
     List<String> getAllPermissionName();
+
+    Set<Permission> findByNameIsIn(@Param("names") Set<String> names);
+
 
 //    @Query("MATCH (m:Apk)<-[r:ACTED_IN]-(a:Person) RETURN m,r,a LIMIT {limit}")
 //    Collection<Apk> graph(@Param("limit") int limit);

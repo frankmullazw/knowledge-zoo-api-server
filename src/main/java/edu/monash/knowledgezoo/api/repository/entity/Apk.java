@@ -34,7 +34,8 @@ public class Apk {
 
     @JsonProperty("Package Name")
     private String packageName;
-    public static final String PACKAGE_NAME_PROPERTY_NAME = "Package Name:";
+    public static final String PACKAGE_NAME_PROPERTY_NAME = "Package Name";
+    public static final String PACKAGE_NAME_PROPERTY_NAME_WITH_COLON = "Package Name:";
 
 
     @Relationship(type = "DECLARES")
@@ -258,9 +259,19 @@ public class Apk {
 
     public void addApiandPackages(Api api, Set<ApiPackage> packages) {
         if (this.apiPackageRelationships == null)
-            this.apiPackageRelationships = new HashSet<ApiPackageRelationship>();
+            this.apiPackageRelationships = new HashSet<>();
         if (api != null) {
             ApiPackageRelationship relationship = new ApiPackageRelationship(this, api, packages);
+            this.apiPackageRelationships.add(relationship);
+        }
+    }
+
+    public void addApiandPackageNames(Api api, Set<String> packageNames) {
+        if (this.apiPackageRelationships == null)
+            this.apiPackageRelationships = new HashSet<>();
+        if (api != null && packageNames != null) {
+            ApiPackageRelationship relationship = new ApiPackageRelationship(this, api);
+            relationship.addAllStringPackages(packageNames);
             this.apiPackageRelationships.add(relationship);
         }
     }

@@ -48,6 +48,7 @@ public class OwnerCertificate {
     private String stateProvince;
     public static final String STATE_PROVINCE_PROPERTY_NAME = "State/Province";
     public static final String STATE_PROVINCE_SHORT_PROPERTY_NAME = "ST";
+    public static final String STATE_PROVINCE_LETTER_PROPERTY_NAME = "S";
 
     @JsonProperty("Country")
     private String country;
@@ -171,9 +172,22 @@ public class OwnerCertificate {
         String[] colonParts = certificateString.split(";");
         String[] certParts = (commaParts.length > colonParts.length) ? commaParts : colonParts;
 
-
         for (String property : certParts) {
             String[] kvPair = property.split(":");
+            /*
+             Some certificates are not formatted properly and can be inconsistent
+             This checks if the property is a pari when split by ":" then it tries "="
+             If they are still not a pair it will be hard to format them into the database
+             so we ommit it be using the break
+             */
+
+            if (kvPair.length != 2) {
+                String[] newPair = property.split("=");
+                if (newPair.length == 2)
+                    kvPair = newPair;
+                else
+                    continue;
+            }
             // Clean up
             // todo: Check cases where there are more than two in kv pairs(value with : symbol)
             kvPair[0] = kvPair[0].trim();
@@ -203,6 +217,7 @@ public class OwnerCertificate {
                     break;
                 case STATE_PROVINCE_PROPERTY_NAME:
                 case STATE_PROVINCE_SHORT_PROPERTY_NAME:
+                case STATE_PROVINCE_LETTER_PROPERTY_NAME:
                     certificate.setStateProvince(kvPair[1]);
                     break;
                 case COUNTRY_PROPERTY_NAME:

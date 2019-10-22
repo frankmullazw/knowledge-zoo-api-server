@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface ApiRepository extends Neo4jRepository<Api, Long> {
 
@@ -20,6 +21,11 @@ public interface ApiRepository extends Neo4jRepository<Api, Long> {
 
     @Query("MATCH (:APK)-[:APK_API_PACKAGE]->(api:API)<-[r:CONTAINS]-(:Tag) RETURN DISTINCT (api.name)")
     List<String> getAllApiName();
+
+
+    Set<Api> findByIdIn(@Param("ids") List<Long> ids);
+
+    Set<Api> findByNameIsIn(@Param("names") Set<String> names);
 
 //    ApiPackage findByGenericName(@Param("genericName") String genericName);
 

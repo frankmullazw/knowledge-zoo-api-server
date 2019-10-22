@@ -5,12 +5,16 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface ActivityRepository extends Neo4jRepository<Activity, Long> {
 
     Activity findByName(@Param("name") String name);
 
     Collection<Activity> findByNameLike(@Param("name") String name);
+
+    Set<Activity> findByNameIsIn(@Param("names") Set<String> names);
+
 
 //    ApiPackage findByGenericName(@Param("genericName") String genericName);
 

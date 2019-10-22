@@ -6,6 +6,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface ReleaseTagRepository extends Neo4jRepository<ReleaseTag, Long> {
 
@@ -18,8 +19,11 @@ public interface ReleaseTagRepository extends Neo4jRepository<ReleaseTag, Long> 
 
     @Query("MATCH (api:API{name: {0}})<-[:CONTAINS{state: \"REMOVE\"}]-(t:Tag) return t")
     ReleaseTag findRemoveTagOfApiByName(String name);
-    
+
     Collection<ReleaseTag> findByReleaseTagApiRelationships(@Param("name") String name);
+
+    Set<ReleaseTag> findByNameIsIn(@Param("names") Set<String> names);
+
 
     // todo: Add release date interfaces
 

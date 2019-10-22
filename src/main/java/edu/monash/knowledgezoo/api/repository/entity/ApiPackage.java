@@ -23,7 +23,7 @@ public class ApiPackage {
     @JsonProperty("Is Library")
     private boolean isLibrary;
 
-    @Relationship(type = "CONTAINS", direction = Relationship.INCOMING)
+    @Relationship(type = "USES")
     private Set<Api> apis = new HashSet<>();
 
     public ApiPackage() {

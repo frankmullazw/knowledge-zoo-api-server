@@ -11,11 +11,15 @@ public interface ApiPackageRepository extends Neo4jRepository<ApiPackage, Long> 
 
     Set<ApiPackage> findByName(@Param("name") String name);
 
+
     ApiPackage findByNameEquals(@Param("name") String name);
 
     Collection<ApiPackage> findByNameLike(@Param("name") String name);
 
     Collection<ApiPackage> findByLibrary(@Param("isLibrary") boolean isLibrary);
+
+    Set<ApiPackage> findByNameIsIn(@Param("names") Set<String> names);
+
 
 //    ApiPackage findByGenericName(@Param("genericName") String genericName);
 

@@ -2,7 +2,6 @@ package edu.monash.knowledgezoo.api.utils;
 
 import edu.monash.knowledgezoo.api.repository.*;
 import edu.monash.knowledgezoo.api.repository.entity.*;
-import edu.monash.knowledgezoo.api.repository.entity.relationship.ApiPackageRelationship;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -13,10 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class JsonApkDataImporterService {
@@ -30,6 +26,8 @@ public class JsonApkDataImporterService {
     private ActivityRepository activityRepo;
     private ApiPackageRepository packageRepo;
     private SDKVersionRepository sdkVersionRepo;
+    private SimpleStopWatchTimer stopWatchTimer = new SimpleStopWatchTimer();
+
 
     public JsonApkDataImporterService(ApkRepository apkRepo, PermissionRepository permissionRepo, ApiRepository apiRepo, SDKVersionRepository versionRepo, FingerprintCertificateRepository fingerprintCertificateRepo, OwnerCertificateRepository ownerCertificateRepo, ActivityRepository activityRepo, ApiPackageRepository packageRepo, SDKVersionRepository sdkVersionRepo) {
         this.apkRepo = apkRepo;
@@ -57,28 +55,28 @@ public class JsonApkDataImporterService {
         return files;
     }
 
-    public Set<Apk> parseFolder(String path, Integer limit) {
+    Set<String> parseFolder(String path, Integer limit) {
         Set<File> files = getAllFileNames(path);
-        Set<Apk> apks = new HashSet<>();
+        Set<String> apkNames = new HashSet<>();
         int count = 0;
         for (File file : files)
             if (file.length() > 0) {
                 try {
                     Apk apk = parseApkFile(file);
                     if (apk != null)
-                        apks.add(apk);
+                        apkNames.add(apk.getName());
                     // Clean up and add data
                     count++;
                     System.out.printf("Processed App File No: %d of %d\n", count, files.size());
                     if (limit != null && count >= limit)
-                        return apks;
+                        return apkNames;
                 } catch (IOException | ParseException e) {
                     System.out.println("Something went wrong importing: " + file.getName());
                     e.printStackTrace();
                 }
             }
         // Save the APKs
-        return apks;
+        return apkNames;
     }
 
     @Transactional
@@ -92,15 +90,18 @@ public class JsonApkDataImporterService {
                 // todo: Perform any checks for this apk
             } else {
                 // Apk doesnt exist in DB process metadata
+                stopWatchTimer.start();
                 processApkCertificates(apk, jo);
                 processApkActivities(apk, jo);
                 processApkPermissions(apk, jo);
                 processApkApisandPackages(apk, jo);
 
                 // Save Apk
-                System.out.println("\n\t\tSaving Apk...");
+                System.out.println("\t\tSaving Apk...");
                 apkRepo.save(apk);
-                System.out.println("Saved Apk: " + apk.getName());
+                System.out.printf("Saved Apk: %s, Time: %s\n\n", apk.getName(), stopWatchTimer.getMainTime().toString());
+                stopWatchTimer.stop();
+                stopWatchTimer.reset();
                 return apk;
             }
         }
@@ -115,11 +116,17 @@ public class JsonApkDataImporterService {
         String versionName = (String) jo.get(Apk.VERSION_NAME_PROPERTY_NAME);
         String packageName = (String) jo.get(Apk.PACKAGE_NAME_PROPERTY_NAME);
 
+        // Package Name had a colon in the imports so a quick check for both
+        if (packageName == null || packageName.length() < 1)
+            packageName = (String) jo.get(Apk.PACKAGE_NAME_PROPERTY_NAME_WITH_COLON);
+
         // Check the sha256 to see if we have the application so we can quickly skip the rest
         Apk apk = apkRepo.findBySha256(sha256);
         if (apk != null) {
             System.out.println(String.format("Apk already found: name: %s, v%s and  (Uploaded): name: %s, v%s", apk.getName(),
                     apk.getVersionName(), name, versionName));
+            if (apk.getPackageName() == null || apk.getPackageName().length() < 1)
+                apk.setPackageName(packageName);
             return apk;
         }
         apk = new Apk();
@@ -156,8 +163,8 @@ public class JsonApkDataImporterService {
                 }
             } else
                 System.out.println(String.format("Invalid SDK version %d for app: %s", sdkNumber, name));
-        } catch (ClassCastException e) {
-            System.out.println("Casting to Integer failed for minimum SDK: " + minSDKVersion);
+        } catch (ClassCastException | NumberFormatException e) {
+            System.out.printf("\t\tCasting to Integer failed for minimum SDK: %s, App: %s", minSDKVersion, name);
         }
         return apk;
     }
@@ -167,7 +174,9 @@ public class JsonApkDataImporterService {
         System.out.println("\t\tSaving Certificates");
         String jsonCertificateFingerprint = (String) jo.get(Apk.FINGERPRINT_CERTIFICATE_PROPERTY_NAME);
         String jsonCertificateOwner = (String) jo.get(Apk.OWNER_CERTIFICATE_PROPERTY_NAME);
+//        System.out.printf("\t\t%s\n", jsonCertificateOwner);
 
+        // Process Fingerprint Certificate
         FingerprintCertificate certificate = fingerprintCertificateRepo.findByName(jsonCertificateFingerprint);
         if (certificate == null) {
             certificate = new FingerprintCertificate(jsonCertificateFingerprint);
@@ -175,97 +184,131 @@ public class JsonApkDataImporterService {
         }
         apk.setFingerprintCertificate(certificate);
 
-
+        // Process Owner certificate
         OwnerCertificate ownerCertificate = ownerCertificateRepo.findByFullCertificate(jsonCertificateOwner);
         if (ownerCertificate == null) {
             ownerCertificate = OwnerCertificate.generateFromFullCertificate(jsonCertificateOwner);
             ownerCertificateRepo.save(ownerCertificate);
         }
         apk.setOwnerCertificate(ownerCertificate);
-
     }
 
     private void processApkActivities(Apk apk, JSONObject jo) {
         // Assigning Activities
-        JSONArray jsonArray = (JSONArray) jo.get("activity");
-        System.out.printf("\t\tProcessing %d Activities...\n", jsonArray.size());
-        for (String activityName : new ArrayList<String>(jsonArray)) {
-            // Check existance
-            // If exists add Permission
-            // Else create a new one
-            Activity activity = activityRepo.findByName(activityName);
-            if (activity == null) {
-                activity = new Activity(activityName);
-                activityRepo.save(activity);
-            }
-            apk.addActivity(activity);
+        Set<String> activityNames = new HashSet<String>((JSONArray) jo.get("activity"));
+        System.out.printf("\t\tProcessing %d Activities...\n", activityNames.size());
+        Set<Activity> retrievedActivities = activityRepo.findByNameIsIn(activityNames);
+        // Process Saved/Retrieved Activities
+        for (Activity retrievedActivity : retrievedActivities) {
+            apk.addActivity(retrievedActivity);
+            activityNames.remove(retrievedActivity.getName());
         }
+
+        Set<Activity> activities = new HashSet<>(activityNames.size());
+        for (String activityName : activityNames) {
+            activities.add(new Activity(activityName));
+        }
+        activityRepo.saveAll(activities);
+        apk.getActivities().addAll(activities);
     }
 
     private void processApkPermissions(Apk apk, JSONObject jo) {
         // Saving Permissions
-        JSONArray jsonArray = (JSONArray) jo.get("permission");
-        System.out.printf("\t\tProcessing %d Permissions...\n", jsonArray.size());
-        for (String permissionName : new ArrayList<String>(jsonArray)) {
-            // Check existance
-            // If exists add Permission
-            // Else create a new one
-            Permission permission = permissionRepo.findByName(permissionName);
-            if (permission == null) {
-                permission = new Permission(permissionName);
-                permissionRepo.save(permission);
-            }
-            apk.addPermission(permission);
+        Set<String> permissionNames = new HashSet<>((JSONArray) jo.get("permission"));
+        System.out.printf("\t\tProcessing %d Permissions...\n", permissionNames.size());
+        Set<Permission> retrievedPermissions = permissionRepo.findByNameIsIn(permissionNames);
+        // Process Saved/Retrieved Permissions
+        for (Permission retrievedPermission : retrievedPermissions) {
+            apk.addPermission(retrievedPermission);
+            permissionNames.remove(retrievedPermission.getName());
         }
+
+        Set<Permission> permissions = new HashSet<>(permissionNames.size());
+        for (String permissionName : permissionNames) {
+            permissions.add(new Permission(permissionName));
+        }
+        permissionRepo.saveAll(permissions);
+        apk.getPermissions().addAll(permissions);
     }
 
     private void processApkApisandPackages(Apk apk, JSONObject jo) {
         // Assigning Apis
         JSONArray jsonApiArray = (JSONArray) jo.get("API");
         System.out.printf("\t\tProcessing %d Apis...\n", jsonApiArray.size());
-        int count = 1;
-        for (JSONObject apiObj : new ArrayList<JSONObject>(jsonApiArray)) {
-            for (String apiKey : (Set<String>) apiObj.keySet()) {
-                // Check existance
-                // If exists add APi
-                // Else create a new one
-                ApiPackageRelationship apiPackageRelationship = new ApiPackageRelationship();
-                Api api = apiRepo.findByName(apiKey);
-                if (api == null) {
-                    api = new Api(apiKey);
-                    apiRepo.save(api);
-                } else
-                    System.out.print("\t\t(API Found) - ");
-                System.out.printf("\t\tAPI[%d of %d]: %s ", count++, jsonApiArray.size(), api.getName());
-                apiPackageRelationship.setApi(api);
+        Set<String> apiNames = new HashSet<>();
+        Set<String> packageNames = new HashSet<>();
+        HashMap<String, Set<String>> apiPackageNames = new HashMap<>();
 
-//                    System.out.println("API: " + apiKey);
-                JSONArray apiPackages = (JSONArray) apiObj.get(apiKey);
-                Iterator<String> jsonPackages = (Iterator<String>) apiPackages.iterator();
-                Set<ApiPackage> packages = new HashSet<>();
-                System.out.printf("(Processing %d Packages) - \n", apiPackages.size());
-                while (jsonPackages.hasNext()) {
-                    String currentPackageName = jsonPackages.next().replace('/', '.').trim();
+        for (JSONObject apiObj : new ArrayList<JSONObject>(jsonApiArray)) {
+            Set<String> apiKeys = (Set<String>) apiObj.keySet();
+            for (String apiKey : apiKeys) {
+                apiNames.add(apiKey);
+                ArrayList<String> apiPackages = new ArrayList<String>((JSONArray) apiObj.get(apiKey));
+                Set<String> currentApiPackageNames = new HashSet<>();
+//                System.out.printf("Packages Size: %d\n", apiPackages.size());
+                Iterator<String> iter = apiPackages.iterator();
+                while (iter.hasNext()) {
+                    String currentPackageName = iter.next().replace('/', '.').trim();
                     if (currentPackageName.length() > 0) {
-                        ApiPackage apiPackage = packageRepo.findByNameEquals(currentPackageName);
-                        if (apiPackage == null) {
-                            apiPackage = new ApiPackage(currentPackageName);
-//                            System.out.printf("Saving Package: %s ", apiPackage.getName());
-                            packageRepo.save(apiPackage);
-                        } else {
-//                            System.out.printf("Existing Package: %s ", apiPackage.getName());
-                            ;
-                        }
-                        // todo: Determine whether we want to save the package apis or not
-//                        apiPackage.addApi(api);
-//                        packageRepo.save(apiPackage);
-                        packages.add(apiPackage);
-                    } else
-                        System.out.printf("\t\t\t--Empty Package for: %s, API: %s\n", apk.getName(), api.getName());
+                        packageNames.add(currentPackageName);
+                        currentApiPackageNames.add(currentPackageName);
+                    } else {
+                        System.out.printf("\t\t\t--Empty Package for: %s, API: %s\n", apk.getName(), apiKey);
+                    }
                 }
-                apk.addApiandPackages(api, packages);
+                apiPackageNames.put(apiKey, currentApiPackageNames);
             }
         }
-    }
+        HashMap<String, ApiPackage> packageMap = new HashMap<>();
+        Set<Api> retrievedApis = apiRepo.findByNameIsIn(apiNames);
+//        System.out.printf("Api: %d, retrieved: %d\n", apiNames.size(), retrievedApis.size());
+        System.out.printf("\t\tProcessing %d Packages with Apis...\n", packageNames.size());
 
+        // Process Retrieved Packages
+        Set<ApiPackage> retrievedPackages = packageRepo.findByNameIsIn(packageNames);
+//        System.out.printf("Packages: %d, retrieved: %d\n", packageNames.size(), retrievedPackages.size());
+
+        // Remove Existing Packages From List
+        for (ApiPackage retrievedPackage : retrievedPackages) {
+            packageMap.put(retrievedPackage.getName(), retrievedPackage);
+            packageNames.remove(retrievedPackage.getName());
+        }
+
+        // Process New Packages
+        // Create Package Nodes for unsaved packages
+        for (String packageName : packageNames) {
+            packageMap.put(packageName, new ApiPackage(packageName));
+        }
+
+        // Process Retrieved Apis and Relationship
+        packageRepo.saveAll(packageMap.values());
+        for (Api retrievedApi : retrievedApis) {
+            Set<String> currentPackageNames = apiPackageNames.get(retrievedApi.getName());
+            apk.addApiandPackageNames(retrievedApi, currentPackageNames);
+            for (String currentPackageName : currentPackageNames) {
+                packageMap.get(currentPackageName).addApi(retrievedApi);
+            }
+            apiNames.remove(retrievedApi.getName());
+            apiPackageNames.remove(retrievedApi.getName());
+        }
+
+        // Process New Apis
+        Set<Api> apis = new HashSet<>();
+        for (String apiName : apiNames) {
+            apis.add(new Api(apiName));
+        }
+
+        apiRepo.saveAll(apis);
+        // Process New Api Relationship
+        for (Api api : apis) {
+            Set<String> currentPackageNames = apiPackageNames.get(api.getName());
+            apk.addApiandPackageNames(api, currentPackageNames);
+            for (String currentPackageName : currentPackageNames) {
+                packageMap.get(currentPackageName).addApi(api);
+            }
+            apiPackageNames.remove(api.getName());
+            apiNames.remove(api.getName());
+        }
+        packageRepo.saveAll(packageMap.values());
+    }
 }

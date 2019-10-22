@@ -11,7 +11,5 @@ public class KnowledgeZooApiServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(KnowledgeZooApiServerApplication.class, args);
 //        ConfigurableApplicationContext context = SpringApplication.run(KnowledgeZooApiServerApplication.class, args);
-
     }
-
 }
